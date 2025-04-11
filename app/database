@@ -1,0 +1,173 @@
+-- Tạo cơ sở dữ liệu
+CREATE DATABASE rhodi;
+USE rhodi;
+
+-- Bảng admin (quản trị viên)
+CREATE TABLE admin (
+    admin_id INT PRIMARY KEY AUTO_INCREMENT,
+    code VARCHAR(50) NOT NULL UNIQUE,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    address TEXT,
+    birth DATE,
+    hire_date DATE,
+    password VARCHAR(255)
+);
+
+-- Bảng customer (khách hàng)
+CREATE TABLE customer (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    address TEXT,
+    password VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Bảng category (danh mục sản phẩm)
+CREATE TABLE category (
+    category_id INT PRIMARY KEY AUTO_INCREMENT,
+    category_name VARCHAR(100) NOT NULL,
+    category_detail_name VARCHAR(100)
+);
+
+-- Bảng brand (thương hiệu sản phẩm)
+CREATE TABLE brand (
+    brand_id INT PRIMARY KEY AUTO_INCREMENT,
+    brand_name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT
+);
+
+-- Bảng products (sản phẩm)
+CREATE TABLE products (
+    product_id INT PRIMARY KEY AUTO_INCREMENT,
+    pname VARCHAR(100) NOT NULL,
+    category_id INT,
+    brand_id INT,
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    main_image VARCHAR(255),
+    FOREIGN KEY (category_id) REFERENCES category(category_id),
+    FOREIGN KEY (brand_id) REFERENCES brand(brand_id)
+);
+
+-- Bảng product_detail (chi tiết sản phẩm)
+CREATE TABLE product_detail (
+    product_detail_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    product_code VARCHAR(50) NOT NULL UNIQUE,
+    dname VARCHAR(100),
+    description TEXT,
+    stock_quantity INT DEFAULT 0,
+    size VARCHAR(30),
+    color VARCHAR(30),
+    cost DECIMAL(60,2),
+    profit_margin DECIMAL(5,2),
+    selling_price DECIMAL(60,2),
+    status ENUM('available', 'out_of_stock', 'discontinued') DEFAULT 'available',
+    imported_at DATETIME,
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+-- Bảng image (hình ảnh sản phẩm)
+CREATE TABLE image (
+    image_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_code VARCHAR(50),
+    image_url VARCHAR(255) NOT NULL,
+    FOREIGN KEY (product_code) REFERENCES product_detail(product_code)
+);
+
+-- Bảng payment_method (phương thức thanh toán)
+CREATE TABLE payment_method (
+    payment_method_id INT PRIMARY KEY AUTO_INCREMENT,
+    method_name VARCHAR(50) NOT NULL,
+    description TEXT,
+    status ENUM('active', 'inactive') DEFAULT 'active'
+);
+
+-- Bảng shipping_address (địa chỉ giao hàng)
+CREATE TABLE shipping_address (
+    address_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT,
+    full_name VARCHAR(100),
+    phone VARCHAR(20),
+    address_line TEXT,
+    city VARCHAR(100),
+    district VARCHAR(100),
+    postal_code VARCHAR(20),
+    is_default BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+);
+
+-- Bảng voucher (mã giảm giá)
+CREATE TABLE voucher (
+    voucher_id INT PRIMARY KEY AUTO_INCREMENT,
+    code VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
+    discount_type ENUM('percentage', 'fixed') NOT NULL,
+    discount_value DECIMAL(10,2) NOT NULL,
+    min_order_value DECIMAL(10,2),
+    max_discount DECIMAL(10,2),
+    quantity INT DEFAULT 0,
+    start_date DATETIME NOT NULL,
+    end_date DATETIME NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Bảng orders (đơn hàng)
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT,
+    admin_id INT,
+    shipping_address_id INT,
+    voucher_id INT DEFAULT NULL,
+    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    total_amount DECIMAL(60,2) CHECK (total_amount >= 0),
+    payment_method_id INT,
+    delivery_date DATETIME DEFAULT NULL,
+    status ENUM('pending', 'confirmed', 'deliver','delivered', 'completed', 'cancelled') DEFAULT 'pending',
+    payment_status ENUM('unpaid', 'paid', 'refunded') DEFAULT 'unpaid',
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+    FOREIGN KEY (admin_id) REFERENCES admin(admin_id),
+    FOREIGN KEY (payment_method_id) REFERENCES payment_method(payment_method_id),
+    FOREIGN KEY (shipping_address_id) REFERENCES shipping_address(address_id),
+    FOREIGN KEY (voucher_id) REFERENCES voucher(voucher_id)
+);
+
+-- Bảng order_detail (chi tiết đơn hàng)
+CREATE TABLE order_detail (
+    order_detail_id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    product_code VARCHAR(50),
+    quantity INT,
+    unit_price DECIMAL(60,2),
+    subtotal DECIMAL(60,2),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_code) REFERENCES product_detail(product_code)
+);
+
+-- Bảng batches (lô hàng nhập kho)
+CREATE TABLE batches (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_detail_id INT NOT NULL,
+    batch_code VARCHAR(50),
+    quantity INT DEFAULT 0,
+    imported_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_detail_id) REFERENCES product_detail(product_detail_id)
+);
+
+-- Bảng cart (giỏ hàng)
+CREATE TABLE cart (
+    cart_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    product_code VARCHAR(50) NOT NULL,
+    quantity INT DEFAULT 1,
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+    FOREIGN KEY (product_code) REFERENCES product_detail(product_code)
+);
