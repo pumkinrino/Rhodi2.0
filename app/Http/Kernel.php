@@ -28,6 +28,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\AdminMiddleware::class,
           
         ],
 
@@ -43,9 +44,8 @@ class Kernel extends HttpKernel
      * Middleware chạy theo route cụ thể.
      */
     protected $routeMiddleware = [
-        // Laravel mặc định
-        'auth' => \App\Http\Middleware\Authenticate::class,
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'Adm' => \App\Http\Middleware\AdminAuth::class,
+        'admin.auth' => \App\Http\Middleware\AdminAuth::class,
     ];
+
+
 }

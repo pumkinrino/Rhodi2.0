@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Session;
-class AdminAuth
+class AdminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,7 @@ class AdminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // dd('AdminAuth');
+     
         // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!Session::has('admin_id')) {
             return redirect()->route('admin.login.form')

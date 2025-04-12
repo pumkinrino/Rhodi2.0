@@ -89,6 +89,14 @@ class AdminAuthController extends Controller
         return redirect()->route('admin.dashboard')->with('success', 'Đăng nhập thành công.');
     }
 
+    public function showDashboard()
+    {
+        $admin = Admin::find(Session::get('admin_id'));
+        return view('admin.dashboard', compact('admin'));
+    }
+    
+
+
     // Đăng xuất
     public function logout()
     {

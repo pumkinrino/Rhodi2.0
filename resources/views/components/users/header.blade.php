@@ -1,5 +1,5 @@
-<header class="header-area header-sticky text-center header-default">
-    <div class="header-main-sticky">
+<header class="header-area header-sticky text-center header-default" style="background-color: #e0d7c6;">
+    <div class="header-main-sticky" style="background-color: #e0d7c6;">
         <div class="header-nav">
             <div class="container">
                 <div class="nav-left float-left">
@@ -45,7 +45,9 @@
                                     <ul>
                                         <form action="{{ route('customer.logout') }}" method="POST">
                                             @csrf
-                                            <li><b style="color: black; text-decoration: underline;">{{ session('customer')->full_name }}</b></li>
+                                            <li><b
+                                                    style="color: black; text-decoration: underline;">{{ session('customer')->full_name }}</b>
+                                            </li>
                                             <li><a href="#" class="modal-view button"><button
                                                         style="background: none; border: none; color: inherit; padding: 0; cursor: pointer;">logout</button></a>
                                             </li>
@@ -102,14 +104,16 @@
                                                 <h6 class="sub-title text-uppercase font-weight-bold white-text">
                                                     Category</h6>
                                                 <ul class="list-unstyled">
-                                                    <li>
-                                                        <a class="menu-item pl-0 w-200"
-                                                            href="https://demo.templatetrip.com/Html/HTML001_victoria/category-5-col.html">
-                                                            5_columns </a>
-                                                    </li>
+                                                    @foreach ($categories as $category)
+                                                        <li>
+                                                            <a class="menu-item pl-0 text-nowrap fs-6"
+                                                                href="{{ route('category.products', $category->category_id) }}">
+                                                                {{ $category->category_name }}
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
                                                 </ul>
                                             </div>
-
                                         </div>
                                     </div>
                                 </li>
