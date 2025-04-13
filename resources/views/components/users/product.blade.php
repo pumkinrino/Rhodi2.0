@@ -36,8 +36,7 @@
                                         </div>
                                         <div class="button-wrapper">
                                             <div class="button-group text-center">
-                                                <button type="button" class="btn btn-primary btn-cart" data-target="#cart-pop"
-                                                    data-toggle="modal" disabled>
+                                                <button type="button" class="btn btn-primary btn-cart">
                                                     <i class="material-icons">shopping_cart</i>
                                                     <span>Add to cart</span>
                                                 </button>
@@ -91,4 +90,12 @@
             });
         });
     </script>
+    <style>
+        .btn.btn-primary.btn-cart:hover {
+            background-color: rgb(106, 80, 31) !important;
+            border-color: gray !important;
+            color: #fff !important;
+        }
+    </style>
+
 @endforeach

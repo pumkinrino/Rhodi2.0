@@ -17,6 +17,7 @@ class Customer extends Model
 
     // Các trường được phép gán giá trị hàng loạt
     protected $fillable = [
+        'customer_id',
         'full_name',
         'email',
         'phone',

@@ -11,10 +11,12 @@
                 <form action="{{ route('customer.login') }}" method="POST">
                     @csrf <!-- Thêm token CSRF để bảo vệ form -->
                     <div class="md-form mb-4">
-                        <input type="text" name="email" id="LoginForm-email" class="form-control validate" placeholder="Your email" required>
+                        <input type="text" name="email" id="LoginForm-email" class="form-control validate"
+                            placeholder="Your email" required>
                     </div>
                     <div class="md-form mb-4">
-                        <input type="password" name="password" id="LoginForm-pass" class="form-control validate" placeholder="Your password" required>
+                        <input type="password" name="password" id="LoginForm-pass" class="form-control validate"
+                            placeholder="Your password" required>
                     </div>
                     <div class="checkbox-link d-flex justify-content-between">
                         <div class="left-col">

@@ -9,12 +9,6 @@ Route::get('/', [ProductController::class, 'index'])->name('welcome');
 Route::get('/product-details/{id}', [ProductController::class, 'showDetail'])->name('product.details');
 
 
-Route::get('product-category/{id}', [ProductController::class, 'showWithCate'])
-    ->name('category.products');
-
-
-Route::get('product-category/{id}', [CategoryController::class, 'show'])
-    ->name('category.products');
 
 //Route cho khách hàng
 
@@ -32,10 +26,15 @@ Route::prefix('customer')->group(function () {
 });
 
 
-//Route Cho giỏ hàng
+//Route Cho sản phẩm và giỏ hàng
 
 
+Route::get('product-category/{id}', [ProductController::class, 'showWithCate'])
+    ->name('category.products');
 
+
+Route::get('product-category/{id}', [CategoryController::class, 'show'])
+    ->name('category.products');
 
 
 

@@ -19,7 +19,6 @@
     <!--header-->
 
     <main>
-
         <!-- Top banner -->
         <div class="slider-wrapper my-40 my-sm-25 float-left w-100">
             <div class="container">
@@ -57,7 +56,7 @@
                 <div id="hometab" class="home-tab my-40 my-sm-25 bottom-to-top hb-animate-element">
                     <div class="container">
                         <!-- tab sản phẩm -->
-                        {@include('components.users.product')}
+                        @include('components.users.product')
                         <!-- end tab sản phẩm -->
                     </div>
                 </div>
@@ -67,15 +66,6 @@
 
     <!-- Footer -->
     @include('components.users.footer')
-    <!-- Cookie -->
-    <div class="alert text-center cookiealert" role="alert">
-        <b>Do you like cookies?</b> We use cookies to ensure you get the best experience on our website. <a
-            href="index.html" rel="noreferrer">learn more</a>
-
-        <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
-            I agree
-        </button>
-    </div>
 
     <!-- Register modal -->
     @include('components.users.registerform')
@@ -293,71 +283,7 @@
         </div>
     </div>
 
-
-    <div class="compare-wrapper float-left w-100">
-        <div class="compare-inner d-flex align-items-center p-20">
-            <span class="close"><i class='material-icons'>
-                    close
-                </i></span>
-            <div class="col-xs-12 col-sm-2 col-md-3 float-left d-flex align-items-center flex-column compare-left">
-                <h2>compare products</h2>
-                <div class="compare-btn">show all</div>
-            </div>
-            <div class="col-xs-12 col-sm-10 col-md-9 d-flex float-left align-items-center compare-right">
-                <div class="compare-close-btn"></div>
-                <div class="compare-products d-flex col-sm-7 col-lg-5">
-                    <div class="row">
-                        <div class="single-item col-sm-4 col-xs-4">
-                            <div class="remove"></div>
-                            <div class="image"><img
-                                    src="https://demo.templatetrip.com/Html/HTML001_victoria/img/products/01.jpg"
-                                    class="img-fluid" alt=""></div>
-                        </div>
-                        <div class="single-item col-sm-4 col-xs-4">
-                            <div class="remove"></div>
-                            <div class="image"><img
-                                    src="https://demo.templatetrip.com/Html/HTML001_victoria/img/products/02.jpg"
-                                    class="img-fluid" alt=""></div>
-                        </div>
-                        <div class="single-item col-sm-4 col-xs-4">
-                            <div class="remove"></div>
-                            <div class="image"><img
-                                    src="https://demo.templatetrip.com/Html/HTML001_victoria/img/products/03.jpg"
-                                    class="img-fluid" alt=""></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="buttons col-sm-5 col-lg-2">
-                    <a href="https://demo.templatetrip.com/Html/HTML001_victoria/compare.html"
-                        class="compare-btn btn btn-secondary float-left w-100 mb-15">compare</a>
-                    <div class="clear-btn btn btn-primary float-left w-100">clear</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Facebook Pixel Code - PUNIT -->
-    <script>
-        !function (f, b, e, v, n, t, s) {
-            if (f.fbq) return; n = f.fbq = function () {
-                n.callMethod ?
-                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-            };
-            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-            n.queue = []; t = b.createElement(e); t.async = !0;
-            t.src = v; s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s)
-        }(window, document, 'script',
-            '../../../connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '3156992947902949');
-        fbq('track', 'PageView');
-    </script>
-    <noscript>
-        <img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id={3156992947902949}&amp;ev=PageView&amp;noscript=1" />
-    </noscript>
-    <!-- End Facebook Pixel Code -->
+    <!-- script hiển thị sản phẩm theo carousel KHÔNG XÓA!!! -->
     <script>
         $(document).ready(function () {
             $('.owl-carousel').owlCarousel({
