@@ -77,6 +77,6 @@ class CustomerAuthController extends Controller
     public function logout()
     {
         session()->forget('customer');
-        return redirect()->route('customer.login')->with('success', 'Bạn đã đăng xuất.');
+        return redirect()->route('welcome');
     }
 }

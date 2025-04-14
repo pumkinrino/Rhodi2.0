@@ -6,7 +6,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Session;
-class AdminMiddleware
+
+class RedirectIfAdminAuthenticated
 {
     /**
      * Handle an incoming request.
@@ -15,12 +16,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-     
-        // Kiểm tra xem người dùng đã đăng nhập chưa
-        if (!Session::has('admin_id')) {
-            return redirect()->route('admin.login.form')
-                ->withErrors(['error' => 'Vui lòng đăng nhập để truy cập trang này.']);
-        }
+    if (Session::has('admin_id')) {
+        return redirect()->route('admin.dashboard')->with('success', 'Bạn đã đăng nhập thành côngcông');
+    }
+
         return $next($request);
     }
 }

@@ -18,8 +18,9 @@ class AdminAuth
         // dd('AdminAuth');
         // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!Session::has('admin_id')) {
-            return redirect()->route('admin.login.form')
-                ->withErrors(['error' => 'Vui lòng đăng nhập để truy cập trang này.']);
+            return redirect()->route('admin.login')
+            ->with('error', 'Vui lòng đăng nhập để truy cập trang này.');
+        
         }
         return $next($request);
     }

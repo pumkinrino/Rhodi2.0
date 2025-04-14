@@ -12,5 +12,8 @@
         "laravel-vite-plugin": "^1.2.0",
         "tailwindcss": "^4.0.0",
         "vite": "^6.2.5"
+    },
+    "dependencies": {
+        "internal-ip": "^8.0.0"
     }
 }

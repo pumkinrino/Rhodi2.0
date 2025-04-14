@@ -1,9 +1,11 @@
 <?php
 use App\Http\Controllers\users\ProductController;
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\users\CustomerAuthController;
 use App\Http\Controllers\users\CategoryController;
-
+use App\Http\Middleware\UserCheckLogin;
+use App\Http\Controllers\LoginController;
 
 Route::get('/', [ProductController::class, 'index'])->name('welcome');
 Route::get('/product-details/{id}', [ProductController::class, 'showDetail'])->name('product.details');
@@ -15,8 +17,11 @@ Route::get('/product-details/{id}', [ProductController::class, 'showDetail'])->n
 
 Route::prefix('customer')->group(function () {
 
-    Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customer.login');
-    Route::post('/login', [CustomerAuthController::class, 'login']);
+    Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])
+    ->middleware(UserCheckLogin::class)
+    ->name('customer.login');
+    Route::post('/login', [CustomerAuthController::class, 'login'])
+    ->Middleware(UserCheckLogin::class);
     Route::get('/register', [CustomerAuthController::class, 'showRegisterForm'])->name('customer.register');
     Route::post('/register', [CustomerAuthController::class, 'register']);
     Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
@@ -41,39 +46,22 @@ Route::get('product-category/{id}', [CategoryController::class, 'show'])
 
 //Route cho admin
 use App\Http\Controllers\admins\AdminAuthController;
-
-
-Route::prefix('admin')->middleware(['web'])->group(function () {
-
+use App\Http\Middleware\RedirectIfAdminAuthenticated;
+use App\Http\Middleware\AdminAuth;
+Route::prefix('admin')->middleware([RedirectIfAdminAuthenticated::class])->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
-
-
 });
 
-
-use App\Http\Kernel;
-
-Route::get('/test', function () {
-    dd(app()->make(Kernel::class)->getRouteMiddleware());
+Route::prefix('admin')->name('admin.')->middleware([AdminAuth::class])->group(function () {
+    // Trang dashboard admin
+    Route::get('/dashboard', [AdminAuthController::class, 'showDashboard'])->name('dashboard');
+    // Trang đăng ký admin
+    Route::get('/register', [AdminAuthController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AdminAuthController::class, 'register'])->name('register.submit');
+    // Logout admin
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 });
 
-use App\Http\Middleware\AdminAuth;
-
-Route::middleware(['web', AdminAuth::class])->group(function () {
-    //hiển thị trang dashboard admin
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-    Route::get('/admin/dashboard', [AdminAuthController::class, 'showDashboard'])->name('admin.dashboard');
-
-
-
-    //hiển thị trang đăng ký và xử lý đăng ký admin
-    Route::get('/register', [AdminAuthController::class, 'showRegisterForm'])->name('admin.register');
-    Route::post('/register', [AdminAuthController::class, 'register'])->name('admin.register.submit');
-    //hiển thị logout khi đã đăng nhập
-    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-});
 
 
