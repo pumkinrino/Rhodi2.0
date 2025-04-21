@@ -6,8 +6,15 @@ use App\Http\Controllers\users\CustomerAuthController;
 use App\Http\Controllers\users\CategoryController;
 use App\Http\Middleware\UserCheckLogin;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\users\CartController;
 
-Route::get('/', [ProductController::class, 'index'])->name('welcome');
+Route::get('/', function () {
+    $products = (new ProductController)->index();
+    $cart = (new CartController)->index();
+
+    return view('welcome', compact('products', 'cart')); // Trả về view với dữ liệu
+})->name('welcome');
+
 Route::get('/product-details/{id}', [ProductController::class, 'showDetail'])->name('product.details');
 
 
@@ -18,10 +25,10 @@ Route::get('/product-details/{id}', [ProductController::class, 'showDetail'])->n
 Route::prefix('customer')->group(function () {
 
     Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])
-    ->middleware(UserCheckLogin::class)
-    ->name('customer.login');
+        ->middleware(UserCheckLogin::class)
+        ->name('customer.login');
     Route::post('/login', [CustomerAuthController::class, 'login'])
-    ->Middleware(UserCheckLogin::class);
+        ->Middleware(UserCheckLogin::class);
     Route::get('/register', [CustomerAuthController::class, 'showRegisterForm'])->name('customer.register');
     Route::post('/register', [CustomerAuthController::class, 'register']);
     Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
@@ -49,11 +56,13 @@ use App\Http\Controllers\admins\AdminAuthController;
 use App\Http\Middleware\RedirectIfAdminAuthenticated;
 use App\Http\Middleware\AdminAuth;
 Route::prefix('admin')->middleware([RedirectIfAdminAuthenticated::class])->group(function () {
-    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
-    Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+
 });
 
 Route::prefix('admin')->name('admin.')->middleware([AdminAuth::class])->group(function () {
+
+    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+    Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
     // Trang dashboard admin
     Route::get('/dashboard', [AdminAuthController::class, 'showDashboard'])->name('dashboard');
     // Trang đăng ký admin

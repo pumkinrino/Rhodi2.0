@@ -1,7 +1,7 @@
 <div class="cart-wrapper">
     <button type="button" class="btn">
         <i class="material-icons">shopping_cart</i>
-        <span class="ttcount">2</span> </button>
+        <span class="ttcount">{{ $count }}</span> </button>
     <div id="cart-dropdown" class="cart-menu">
         <ul class="w-100 float-left">
             <li>

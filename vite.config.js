@@ -2,9 +2,9 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import internalIp from 'internal-ip';
-
+const { v4: internalIpV4 } = internalIp;
 export default defineConfig(async () => {
-    const ip = await internalIp.v4(); // Lấy địa chỉ IPv4 của máy
+    const ip = await internalIpV4();
     return {
         server: {
             host: '0.0.0.0',
@@ -26,3 +26,4 @@ export default defineConfig(async () => {
         ],
     };
 });
+

@@ -22,6 +22,10 @@ class AdminAuth
             ->with('error', 'Vui lòng đăng nhập để truy cập trang này.');
         
         }
+        elseif(Session::has('admin_id')) {
+            return redirect()->route('admin.dashboard')
+            ->with('success', 'Bạn đã đăng nhập thành công');
+        }
         return $next($request);
     }
 }

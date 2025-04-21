@@ -25,10 +25,9 @@
                                                 <span class="fa fa-stack"><i class="material-icons">star</i></span>
                                                 <span class="fa fa-stack"><i class="material-icons">star</i></span>
                                                 <span class="fa fa-stack"><i class="material-icons off">star</i></span>
-                                                <span class="fa fa-stack"><i class="material-icons off">star</i></span>
+                                                
                                             </div>
                                         </div>
-
                                         <div class="price">
                                             <div class="regular-price">$100.00</div>
                                             <div class="old-price">$150.00</div>

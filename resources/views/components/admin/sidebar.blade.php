@@ -59,7 +59,7 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-box-seam-fill"></i>
                                 <p>
-                                    Widgets
+                                    Products
                                     <i class="nav-arrow bi bi-chevron-right"></i>
                                 </p>
                             </a>
@@ -67,7 +67,7 @@
                                 <li class="nav-item">
                                     <a href="./widgets/small-box.html" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
-                                        <p>Small Box</p>
+                                        <p>All Products</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
