@@ -139,7 +139,7 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                             <img src="https://th.bing.com/th/id/OIP.iuoVC-wlNWy6i5NNzWg9FQHaFj?rs=1&pid=ImgDetMain"
                                 class="user-image rounded-circle shadow" alt="User Image" />
-                            <span class="d-none d-md-inline">{{ $admin->full_name }}</span>
+                            <span class="d-none d-md-inline">{{ Session::get('admin_name') }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                             <!--begin::User Image-->
@@ -147,8 +147,8 @@
                                 <img src="https://th.bing.com/th/id/OIP.iuoVC-wlNWy6i5NNzWg9FQHaFj?rs=1&pid=ImgDetMain"
                                     class="rounded-circle shadow" alt="User Image" />
                                 <p>
-                                    {{ $admin->full_name }}
-                                    <small>Member since: {{ $admin->hire_date }}</small>
+                                {{ Session::get('admin_name') }}
+                          
                                 </p>
                             </li>
                             <!--end::User Image-->

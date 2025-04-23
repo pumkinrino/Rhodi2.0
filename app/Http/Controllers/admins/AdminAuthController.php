@@ -86,6 +86,7 @@ class AdminAuthController extends Controller
         Session::put('admin_id', $admin->admin_id);
         Session::put('admin_name', $admin->full_name);
 
+
         return redirect()->route('admin.dashboard')->with('success', 'Đăng nhập thành công.');
     }
 
