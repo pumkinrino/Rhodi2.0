@@ -293,7 +293,7 @@
 <!-- Button để mở Modal -->
 <button type="button" class="btn btn-warning" onclick="document.getElementById('restockModal').style.display='block'">Bù hàng</button>
 
-<!-- Modal Bù Hàng -->
+
 
                 </td>
    <!-- Modal sửa -->
@@ -377,22 +377,30 @@
 
 
 
-<!-- Modal Bù Hàng -->
 
 
 <!-- Modal Bù Hàng -->
 <div id="restockModal" class="modal">
-    <div class="modal-content">
+    <div id="modalContent" class="modal-content">
         <!-- Form bù hàng -->
-        <form method="POST" action="{{ route('admin.product.restock', $detail->product_detail_id) }}">
+        <form id="restockForm" method="POST" action="{{ route('admin.product.restock', $detail->product_detail_id) }}">
             @csrf
             <label for="restockQuantity">Số lượng bù hàng:</label>
             <input type="number" id="restockQuantity" name="restock_quantity" required>
-            <button type="submit">Bù hàng</button>
+            <button id="submitRestock" type="submit">Bù hàng</button>
         </form>
-        <button onclick="document.getElementById('restockModal').style.display='none'">Đóng</button>
+        <button id="closeModal" onclick="document.getElementById('restockModal').style.display='none'">Đóng</button>
     </div>
 </div>
+
+<table id="productTable">
+    <tbody>
+        <tr id="emptyRow">
+            <td colspan="8" class="text-center">Không tìm thấy sản phẩm phù hợp.</td>
+        </tr>
+    </tbody>
+</table>
+
 
 
 
@@ -507,28 +515,89 @@
 
 
 <style>
-.modal {
-    display: none; /* Ẩn modal theo mặc định */
+
+/* Modal Styling */
+#restockModal {
+    display: none; /* Modal ẩn theo mặc định */
     position: fixed;
-    z-index: 1; /* Đảm bảo modal nằm trên các nội dung khác */
+    z-index: 1000;
     left: 0;
-    top: 20%;
+    top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-   
+    background-color: rgba(0, 0, 0, 0.5); /* Hiệu ứng nền tối */
 }
 
-.modal-content {
-    background-color: #fefefe; /* Nền trắng */
-    margin: auto; /* Canh giữa theo cả trục dọc và ngang */
+#modalContent {
+    background-color: #fefefe;
+    margin: 10% auto;
     padding: 20px;
-    border: 1px solid #888; /* Viền nhạt */
-    width: 300px; /* Chiều rộng modal */
-    height: 300px; /* Chiều cao modal */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bóng nhẹ để nổi bật */
-    border-radius: 0; /* Loại bỏ góc bo tròn */
+    border: 1px solid #888;
+    width: 40%;
+    border-radius: 8px; /* Bo góc modal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Hiệu ứng đổ bóng */
 }
+
+/* Input Styling */
+#restockForm input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Button Styling */
+#submitRestock {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#submitRestock:hover {
+    background-color: #0056b3; /* Hiệu ứng hover */
+}
+
+#closeModal {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#closeModal:hover {
+    background-color: #a71d2a; /* Hiệu ứng hover cho nút đóng */
+}
+
+/* Empty Row Styling */
+#emptyRow td {
+    text-align: center;
+    font-style: italic;
+    color: #999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #modalContent {
+        width: 90%; /* Modal rộng hơn trên màn hình nhỏ */
+    }
+}
+
+
+
 
 </style>
 </body>
