@@ -11,17 +11,24 @@ class AdCategoryController extends Controller
      */
     public function index()
     {
-        //tạo đối tượng model
-        // $obj = new Category();
-        //gọi hàm index() trong model
-        $categories = Category::query()->get();
-        //hiển thị view và truyền dữ liệu từ model
-
-        return view(
-            'admin.categories.index',
-            ['categories' => $categories]
-        );
+        // Lấy từ khóa tìm kiếm từ request
+        $search = request('search');
+        
+        // Lấy số lượng bản ghi trên mỗi trang từ request, mặc định là 15
+        $perPage = request('perPage', 15);
+    
+        // Truy vấn danh mục với điều kiện tìm kiếm, nếu có
+        $categories = Category::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('category_name', 'like', "%{$search}%")
+                             ->orWhere('category_detail_name', 'like', "%{$search}%");
+            })
+            ->paginate($perPage);
+    
+        // Trả về view và truyền dữ liệu categories đã phân trang
+        return view('admin.categories.index', ['categories' => $categories]);
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -112,4 +119,7 @@ class AdCategoryController extends Controller
         return redirect()->route('admin.categories.index')
             ->with('success', 'Xóa thành công');
     }
+
+
+    
 }

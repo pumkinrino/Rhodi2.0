@@ -60,7 +60,8 @@
 
                     <!-- Nội dung chín -->
 
-                    <!-- Nút để mở Modal Thêm Thương Hiệu -->
+
+                                         <!-- Nút để mở Modal Thêm Thương Hiệu -->
                     <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addBrandModal">Thêm
                         Thương Hiệu</button>
 
@@ -96,6 +97,26 @@
                             </form>
                         </div>
                     </div>
+
+
+
+{{-- Form tìm kiếm --}}
+<form method="GET" class="row mb-3">
+<div class="col-md-2">
+        <select name="perPage" onchange="this.form.submit()" class="form-select">
+            <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10 thương hiệu/trang</option>
+            <option value="15" {{ $perPage == 15 ? 'selected' : '' }}>15 thương hiệu/trang</option>
+            <option value="20" {{ $perPage == 20 ? 'selected' : '' }}>20 thương hiệu/trang</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <input type="text" name="search" value="{{ $search }}" class="form-control"
+               placeholder="Tìm theo tên thương hiệu...">
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+    </div>
+
                     {{-- Bảng danh sách brands --}}
                     <table class="table table-bordered" id="brandTable">
                         <thead>
@@ -171,6 +192,12 @@
                             @endforeach
                         </tbody>
                     </table>
+                
+
+{{-- Phân trang --}}
+<div class="d-flex justify-content-center">
+    {{ $brands->appends(['search' => $search, 'perPage' => $perPage])->links('pagination::bootstrap-5') }}
+</div>
                 </div>
 
             </div>

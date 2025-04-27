@@ -141,18 +141,22 @@
                                 <th>Thương hiệu</th>
                                 <th>Trạng thái</th>
                                 <th>Ảnh sản phẩm</th>
+                                <th>Chi tiết sản phẩm</th>
                                 <th>Thao tác</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($products as $product)
+                           
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $product->pname }}</td>
+                                    <td>{{ $product->pname }} </td>
                                     <td>{{ $product->category_name }} - {{ $product->category_detail_name }}</td>
                                     <td>{{ $product->brand_name }}</td>
                                     <td>{{ $product->status }}</td>
                                     <td>
+                                  
         @if($product->main_image)
       <img src="{{ asset('storage/' . $product->main_image) }}" alt="Product Image" width="80"
       class="rounded object-cover" />
@@ -160,9 +164,23 @@
     @else
     <span>No Image</span>
   @endif
+  <td>
+                                         <a href="{{ route('admin.products.details.index', ['product_id' => $product->product_id]) }}">📋 Detail
+                                    List {{ $product->product_id }}</a>
+                                </td>
+  
         </td>
                                
                                     <td>
+                                            <!-- Nút xóa -->
+                                            <form action="{{ route('admin.products.destroy', $product->product_id) }}"
+                                            method="POST" style="display:inline-block;"
+                                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                        </form>
+
                                         <!-- Nút chỉnh sửa -->
                                         <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editProductModal{{ $product->product_id }}">
                         Sửa
@@ -240,30 +258,12 @@
 </div>
 @endforeach
                                         <!-- Kết thúc modal chỉnh sửa -->
-                                        
-
-
-
-
-
-
-
-                                        <!-- Nút xóa -->
-                                        <form action="{{ route('admin.products.destroy', $product->product_id) }}"
-                                            method="POST" style="display:inline-block;"
-                                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
-                                        </form>
                                     </td>
    
-                                    <td>
-                                         <a href="{{ route('admin.products.details.index', ['product_id' => $product->product_id]) }}">📋 Detail
-                                    List</a>
-                                </td>
+                                  
                                 </tr>
                             @endforeach
+                            
                         </tbody>
                     </table>
                     <!-- Kết thúc bảng -->

@@ -148,15 +148,7 @@ CREATE TABLE order_detail (
     FOREIGN KEY (product_code) REFERENCES product_detail(product_code)
 );
 
--- Bảng batches (lô hàng nhập kho)
-CREATE TABLE batches (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    product_detail_id INT NOT NULL,
-    batch_code VARCHAR(50),
-    quantity INT DEFAULT 0,
-    imported_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_detail_id) REFERENCES product_detail(product_detail_id)
-);
+
 
 -- Bảng cart (giỏ hàng)
 CREATE TABLE cart (

@@ -83,12 +83,7 @@
                                     </a>
                                 </li>
                             
-                                <li class="nav-item">
-                                    <a href="./widgets/cards.html" class="nav-link">
-                                        <i class="nav-icon bi bi-circle"></i>
-                                        <p>Inactive Products</p>
-                                    </a>
-                                </li>
+                         
                                 
                             </ul>
                         </li>

@@ -98,113 +98,140 @@
                         </div>
                     </div>
 
+                    <form method="GET" action="{{ route('admin.categories.index') }}" class="row mb-3 align-items-center">
+    
+                    <div class="col-md-2">
+        <select name="perPage" id="perPage" class="form-select" onchange="this.form.submit()">
+            <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+            <option value="15" {{ request('perPage') == 15 ? 'selected' : '' }}>15</option>
+            <option value="20" {{ request('perPage') == 20 ? 'selected' : '' }}>20</option>
+            <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+        </select>
+    </div>
+    
+                    <div class="col-md-4">
+        <input type="text" name="search" class="form-control" placeholder="Tìm kiếm danh mục..." value="{{ request('search') }}">
+    </div>
 
-                    <!-- Table hiển thị danh mục -->
-                    <table class="table table-bordered" id="categoryTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên danh mục</th>
-                                <th>Mô tả</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($categories as $category)
+ 
+
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+</form>
+
+
+
+
+
+
+                        <!-- Table hiển thị danh mục -->
+                        <table class="table table-bordered" id="categoryTable">
+                            <thead>
                                 <tr>
-                                    <td>{{ $category->category_id}}</td>
-                                    <td>{{ $category->category_name }}</td>
-                                    <td>{{ $category->category_detail_name }}</td>
-                                    <td>
-                                        <!-- Nút Chỉnh sửa -->
-                                        <!-- Trong vòng lặp mỗi category -->
-                                        <button class="btn btn-primary btn-edit" data-id="{{ $category->category_id }}"
-                                            data-name="{{ $category->category_name }}"
-                                            data-detail="{{ $category->category_detail_name }}" data-bs-toggle="modal"
-                                            data-bs-target="#editCategoryModal">
-                                            ✏️ Sửa
-                                        </button>
-
-                                        <!-- Modal -->
-                                        <!-- Modal Sửa Danh Mục -->
-                                        <div class="modal fade @if(isset($showEditModal) && $showEditModal) show d-block @endif"
-                                            id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel"
-                                            style="@if(isset($showEditModal) && $showEditModal) display: block; background: rgba(0,0,0,0.5); @endif"
-                                            aria-modal="true" role="dialog">
-
-                                            <div class="modal-dialog">
-                                                <form method="POST"
-                                                    action="{{ route('admin.categories.update', $category->category_id ?? '') }}">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Sửa danh mục</h5>
-                                                            <a href="{{ route('admin.categories.index') }}"
-                                                                class="btn-close"></a>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <label>Tên danh mục</label>
-                                                                <input type="text" name="category_name"
-                                                                    value="{{ old('category_name', $category->category_name ?? '') }}"
-                                                                    class="form-control">
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label>Chi tiết danh mục</label>
-                                                                <input type="text" name="category_detail_name"
-                                                                    value="{{ old('category_detail_name', $category->category_detail_name ?? '') }}"
-                                                                    class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button class="btn btn-success">Cập nhật</button>
-                                                            <a href="{{ route('admin.categories.index') }}"
-                                                                class="btn btn-secondary">Đóng</a>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Nút Xóa -->
-                                        <form action="{{ route('admin.categories.destroy', $category->category_id) }}"
-                                            method="POST" style="display:inline;"
-                                            onsubmit="return confirm('Bạn có chắc muốn xóa danh mục này không?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">🗑️ Xóa</button>
-                                        </form>
-                                    </td>
+                                    <th>ID</th>
+                                    <th>Tên danh mục</th>
+                                    <th>Mô tả</th>
+                                    <th>Thao tác</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach ($categories as $category)
+                                    <tr>
+                                        <td>{{ $category->category_id}}</td>
+                                        <td>{{ $category->category_name }}</td>
+                                        <td>{{ $category->category_detail_name }}</td>
+                                        <td>
+                                            <!-- Nút Chỉnh sửa -->
+                                            <!-- Trong vòng lặp mỗi category -->
+                                            <button class="btn btn-primary btn-edit" data-id="{{ $category->category_id }}"
+                                                data-name="{{ $category->category_name }}"
+                                                data-detail="{{ $category->category_detail_name }}" data-bs-toggle="modal"
+                                                data-bs-target="#editCategoryModal">
+                                                ✏️ Sửa
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <!-- Modal Sửa Danh Mục -->
+                                            <div class="modal fade @if(isset($showEditModal) && $showEditModal) show d-block @endif"
+                                                id="editCategoryModal" tabindex="-1"
+                                                aria-labelledby="editCategoryModalLabel"
+                                                style="@if(isset($showEditModal) && $showEditModal) display: block; background: rgba(0,0,0,0.5); @endif"
+                                                aria-modal="true" role="dialog">
+
+                                                <div class="modal-dialog">
+                                                    <form method="POST"
+                                                        action="{{ route('admin.categories.update', $category->category_id ?? '') }}">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Sửa danh mục</h5>
+                                                                <a href="{{ route('admin.categories.index') }}"
+                                                                    class="btn-close"></a>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <label>Tên danh mục</label>
+                                                                    <input type="text" name="category_name"
+                                                                        value="{{ old('category_name', $category->category_name ?? '') }}"
+                                                                        class="form-control">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label>Chi tiết danh mục</label>
+                                                                    <input type="text" name="category_detail_name"
+                                                                        value="{{ old('category_detail_name', $category->category_detail_name ?? '') }}"
+                                                                        class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-success">Cập nhật</button>
+                                                                <a href="{{ route('admin.categories.index') }}"
+                                                                    class="btn btn-secondary">Đóng</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
 
 
+
+                                            <!-- Nút Xóa -->
+                                            <form action="{{ route('admin.categories.destroy', $category->category_id) }}"
+                                                method="POST" style="display:inline;"
+                                                onsubmit="return confirm('Bạn có chắc muốn xóa danh mục này không?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">🗑️ Xóa</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                    <!--end::Row-->
+                </div>
+                <!--end::Container-->
+            </div>
+            <div class="app-content">
+
+                <!--begin::Container-->
+                <div class="container-fluid">
+                    <!--begin::Row-->
+                    <div class="row">
+
+
+
+
+                    </div>
+                    <!-- /.col-md-6 -->
                 </div>
                 <!--end::Row-->
             </div>
             <!--end::Container-->
-    </div>
-    <div class="app-content">
-
-        <!--begin::Container-->
-        <div class="container-fluid">
-            <!--begin::Row-->
-            <div class="row">
-
-
-
-
-            </div>
-            <!-- /.col-md-6 -->
-        </div>
-        <!--end::Row-->
-    </div>
-    <!--end::Container-->
     </div>
     <!--end::App Content-->
     </main>
@@ -295,11 +322,11 @@
             });
         });
     </script>
-<style>
-    .modal-backdrop {
-        display: none !important;
-    }
-</style>
+    <style>
+        .modal-backdrop {
+            display: none !important;
+        }
+    </style>
 
 </body>
 <!--end::Body-->

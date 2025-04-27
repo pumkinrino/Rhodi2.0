@@ -8,6 +8,7 @@
 
 
     <!--begin::Primary Meta Tags-->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="title" content="AdminLTE | Dashboard v3" />
     <meta name="author" content="ColorlibHQ" />
@@ -56,176 +57,395 @@
                         @endif
                     </div>
 
-
+                    @if($lowStockAlert)
+    <div class="alert alert-warning">
+        {{ $lowStockAlert }}
+    </div>
+@endif
 
                     <!-- Nội dung chín -->
 
 
                     <div class="container mt-4">
-      <!-- Hiển thị tên sản phẩm trên tiêu đề -->
-       <!-- Gọi f đầu tiên là ra 1 nhóm gọi f 2 là ra ctiet 1 -->
-      <h1>Chi tiết sản phẩm: {{ $groupedProductDetails->first()->first()->pname }}</h1>
+                        <!-- Hiển thị tên sản phẩm trên tiêu đề -->
+                        <!-- Gọi f đầu tiên là ra 1 nhóm gọi f 2 là ra ctiet 1 -->
+                       
 
 
 
 
 
-<!-- Thêm modal cho chi tiết sản phẩm -->
-<div class="container mt-4">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productDetailModal">
-        Thêm chi tiết sản phẩm
-    </button>
+                        <!-- Thêm modal cho chi tiết sản phẩm -->
+                        <div class="container mt-4">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#productDetailModal">
+                                Thêm chi tiết sản phẩm
+                            </button>
 
-    <!-- Modal -->
-    <div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="productDetailModalLabel">Thêm chi tiết sản phẩm</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('admin.products.details.store', ['product_id' => $product_id]) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="size" class="form-label">Kích thước</label>
-                            <input type="text" class="form-control" id="size" name="size" required>
+                            <!-- Modal -->
+                            <div class="modal fade" id="productDetailModal" tabindex="-1"
+                                aria-labelledby="productDetailModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="productDetailModalLabel">Thêm chi tiết sản phẩm
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <form
+                                            action="{{ route('admin.products.details.store', ['product_id' => $product_id]) }}"
+                                            method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="size" class="form-label">Kích thước</label>
+                                                    <input type="text" class="form-control" id="size" name="size"
+                                                        required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="color" class="form-label">Màu sắc</label>
+                                                    <input type="text" class="form-control" id="color" name="color"
+                                                        required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="cost" class="form-label">Giá vốn</label>
+                                                    <input type="number" class="form-control" id="cost" name="cost"
+                                                        step="0.01" required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="selling_price" class="form-label">Giá bán</label>
+                                                    <input type="number" class="form-control" id="selling_price"
+                                                        name="selling_price" step="0.01" required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="description" class="form-label">Mô tả</label>
+                                                    <textarea class="form-control" id="description" name="description"
+                                                        rows="3" required></textarea>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="stock_quantity" class="form-label">Số lượng trong
+                                                        kho</label>
+                                                    <input type="number" class="form-control" id="stock_quantity"
+                                                        name="stock_quantity" required>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="images" class="form-label">Hình ảnh sản phẩm</label>
+                                                    <input type="file" class="form-control" id="images" name="images[]"
+                                                        multiple>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Đóng</button>
+                                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="color" class="form-label">Màu sắc</label>
-                            <input type="text" class="form-control" id="color" name="color" required>
-                        </div>
+               
 
-                        <div class="mb-3">
-                            <label for="cost" class="form-label">Giá vốn</label>
-                            <input type="number" class="form-control" id="cost" name="cost" step="0.01" required>
-                        </div>
+                        @php
+    use Illuminate\Pagination\LengthAwarePaginator;
 
-                        <div class="mb-3">
-                            <label for="selling_price" class="form-label">Giá bán</label>
-                            <input type="number" class="form-control" id="selling_price" name="selling_price" step="0.01" required>
-                        </div>
+    $search = request('search');
+    $perPage = request('perPage', 15);
+    $currentPage = LengthAwarePaginator::resolveCurrentPage();
 
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Mô tả</label>
-                            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-                        </div>
+    $filtered = $groupedProductDetails->filter(function ($details) use ($search) {
+        $detail = $details->first();
+        return !$search ||
+            stripos($detail->size, $search) !== false ||
+            stripos($detail->color, $search) !== false;
+    });
 
-                        <div class="mb-3">
-                            <label for="stock_quantity" class="form-label">Số lượng trong kho</label>
-                            <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" required>
-                        </div>
+    $sliced = $filtered->slice(($currentPage - 1) * $perPage, $perPage);
+    $paginator = new LengthAwarePaginator(
+        $sliced->values(), // dùng values() để reset key
+        $filtered->count(),
+        $perPage,
+        $currentPage,
+        [
+            'path' => request()->url(),
+            'query' => request()->query(), // để giữ lại ?search=...&perPage=...
+        ]
+    );
+@endphp
 
-                        <div class="mb-3">
-                            <label for="images" class="form-label">Hình ảnh sản phẩm</label>
-                            <input type="file" class="form-control" id="images" name="images[]" multiple>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-primary">Lưu</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+{{-- Form tìm kiếm và perPage --}}
+<form method="GET" class="row mb-3">
+    <div class="col-md-4">
+        <input type="text" name="search" value="{{ request('search') }}" class="form-control"
+               placeholder="Tìm theo size hoặc màu...">
     </div>
-</div>
-
-<!-- Đảm bảo đã thêm Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-<!-- Đảm bảo đã thêm Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
-
-    <table class="table table-bordered table-striped align-middle">
-        <thead class="table-white">
+    <div class="col-md-2">
+        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+    </div>
+    <div class="col-md-3">
+        <select name="perPage" onchange="this.form.submit()" class="form-select">
+            <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10 sản phẩm/trang</option>
+            <option value="15" {{ $perPage == 15 ? 'selected' : '' }}>15 sản phẩm/trang</option>
+        </select>
+    </div>
+ 
+</form>
+{{-- Bảng hiển thị thông tin chi tiết sản phẩm --}}
+<table class="table table-bordered table-striped align-middle">
+    <thead class="table-white">
+        <tr>
+            <th>ID</th>
+            <th>Mã sản phẩm</th>
+            <th>Size</th>
+            <th>Màu</th>
+            <th>Giá gốc</th>
+            <th>Tồn kho</th>
+            <th style="width: 10%;">Ảnh</th>
+            <th>Trạng thái</th>
+ 
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse ($paginator as $productDetailId => $details)
+            @php $detail = $details->first(); @endphp
             <tr>
-                <th>ID</th>
-                <th>Size</th>
-                <th>Màu</th>
-                <th>Giá gốc</th>
-                <th>Tồn kho</th>
-                <th>Ảnh</th>
-                <th>Trạng thái</th>
-                <th>Hành động</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($groupedProductDetails as $productDetailId => $details)
+                <td>{{ $detail->product_detail_id }}</td>
+                <td> {{ $detail ->product_code }} </td>
+                <td>{{ $detail->size }}</td>
+                <td>{{ $detail->color }}</td>
+                <td>{{ number_format($detail->cost, 0, ',', '.') }} đ</td>
+                <td>{{ $detail->stock_quantity }}</td>
+                <td>
+                    @if($details->count() > 0)
+                        <div id="carousel-{{ $detail->product_detail_id }}" class="carousel slide"
+                             data-bs-ride="carousel" style="width: 200px; height: 200px; overflow: hidden;">
+                            <div class="carousel-inner" style="width: 100%; height: 100%;">
+                                @foreach ($details as $index => $image)
+                                    @if($image->image_url)
+                                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                            <img src="{{ asset('storage/' . $image->image_url) }}"
+                                                 class="d-block mx-auto"
+                                                 style="max-width: 100%; max-height: 100%; object-fit: contain;"
+                                                 alt="Ảnh sản phẩm">
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                            @if($details->count() > 1)
+                                <button class="carousel-control-prev" type="button"
+                                        data-bs-target="#carousel-{{ $detail->product_detail_id }}"
+                                        data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button"
+                                        data-bs-target="#carousel-{{ $detail->product_detail_id }}"
+                                        data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </button>
+                            @endif
+                        </div>
+                    @else
+                        Không có ảnh
+                    @endif
+                </td>
+                <td>
                 @php
-                    $detail = $details->first();
-                @endphp
-                <tr>
-                    <td>{{ $detail->product_detail_id }}</td>
-                    <td>{{ $detail->size }}</td>
-                    <td>{{ $detail->color }}</td>
-                    <td>{{ number_format($detail->cost, 0, ',', '.') }} đ</td>
-                    <td>{{ $detail-> stock_quantity }}11</td>
-                    <td>
-                        @if($detail->image_url)
-                        <img src="{{ asset('storage/product_details/' . $image->image_url) }}" alt="Product Image" class="img-fluid">
-                        @else
-                            Không có ảnh
-                        @endif
-                    </td>
-                    <td>
-                        <span class="badge {{ $detail->status === 'available' ? 'bg-success' : 'bg-danger' }}">
-                            {{ $detail->status === 'available' ? 'Còn hàng' : 'Ngừng bán' }}
-                        </span>
-                    </td>
-                    <td>
-                       
+    switch ($detail->status) {
+        case 'available':
+            $badgeClass = 'bg-success';
+            $statusText = 'Còn hàng';
+            break;
+        case 'out_of_stock':
+            $badgeClass = 'bg-warning text-dark';
+            $statusText = 'Hết hàng';
+            break;
+        case 'discontinued':
+            $badgeClass = 'bg-danger';
+            $statusText = 'Ngừng kinh doanh';
+            break;
+        default:
+            $badgeClass = 'bg-secondary';
+            $statusText = 'Không xác định';
+            break;
+    }
+@endphp
 
-                       
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="9" class="text-center">Chưa có chi tiết sản phẩm nào.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+<span class="badge {{ $badgeClass }}">
+    {{ $statusText }}
+</span>
+
+                </td>
+                <td>
+                  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProductDetailModal{{ $detail->product_detail_id }}">
+    Sửa
+</button>
+<!-- Button để mở Modal -->
+<button type="button" class="btn btn-warning" onclick="document.getElementById('restockModal').style.display='block'">Bù hàng</button>
+
+<!-- Modal Bù Hàng -->
+
+                </td>
+   <!-- Modal sửa -->
+<div class="modal fade" id="editProductDetailModal{{ $detail->product_detail_id }}" tabindex="-1" aria-labelledby="editProductDetailModalLabel{{ $detail->product_detail_id }}" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form action="{{ route('admin.products.details.update', $detail->product_detail_id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProductDetailModalLabel{{ $detail->product_detail_id }}">Cập nhật chi tiết sản phẩm</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Size -->
+          <div class="mb-3">
+            <label for="size" class="form-label">Size</label>
+            <input type="text" class="form-control" name="size" value="{{ $detail->size }}">
+          </div>
+
+          <!-- Color -->
+          <div class="mb-3">
+            <label for="color" class="form-label">Màu sắc</label>
+            <input type="text" class="form-control" name="color" value="{{ $detail->color }}">
+          </div>
+
+          <!-- Cost -->
+          <div class="mb-3">
+            <label for="cost" class="form-label">Giá nhập</label>
+            <input type="number" step="0.01" class="form-control" name="cost" value="{{ $detail->cost }}">
+          </div>
+
+          <!-- Selling Price -->
+          <div class="mb-3">
+            <label for="selling_price" class="form-label">Giá bán</label>
+            <input type="number" step="0.01" class="form-control" name="selling_price" value="{{ $detail->selling_price }}">
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="description" class="form-label">Mô tả</label>
+            <textarea class="form-control" name="description" rows="3">{{ $detail->description }}</textarea>
+          </div>
+
+          <!-- Stock Quantity -->
+          <div class="mb-3">
+            <label for="stock_quantity" class="form-label">Số lượng tồn kho</label>
+            <input type="number" class="form-control" name="stock_quantity" value="{{ $detail->stock_quantity }}">
+          </div>
+
+          <!-- Status -->
+          <div class="mb-3">
+            <label for="status" class="form-label">Trạng thái</label>
+            <select class="form-select" name="status">
+              <option value="available" {{ $detail->status == 'available' ? 'selected' : '' }}>Còn hàng</option>
+              <option value="out_of_stock" {{ $detail->status == 'out_of_stock' ? 'selected' : '' }}>Hết hàng</option>
+              <option value="discontinued" {{ $detail->status == 'discontinued' ? 'selected' : '' }}>Ngưng bán</option>
+            </select>
+          </div>
+
+          <!-- Upload Images -->
+          <div class="mb-3">
+            <label for="images" class="form-label">Ảnh sản phẩm (có thể chọn nhiều)</label>
+            <input type="file" class="form-control" name="images[]" multiple accept="image/*">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+          <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 
 
 
-            </div>
-            <!--end::Row-->
+
+
+<!-- Modal Bù Hàng -->
+
+
+<!-- Modal Bù Hàng -->
+<div id="restockModal" class="modal">
+    <div class="modal-content">
+        <!-- Form bù hàng -->
+        <form method="POST" action="{{ route('admin.product.restock', $detail->product_detail_id) }}">
+            @csrf
+            <label for="restockQuantity">Số lượng bù hàng:</label>
+            <input type="number" id="restockQuantity" name="restock_quantity" required>
+            <button type="submit">Bù hàng</button>
+        </form>
+        <button onclick="document.getElementById('restockModal').style.display='none'">Đóng</button>
     </div>
-    <!--end::Container-->
-
-    <div class="app-content">
-
-        <!--begin::Container-->
-        <div class="container-fluid">
-            <!--begin::Row-->
-            <div class="row">
+</div>
 
 
 
+            </tr>
+        @empty
+            <tr>
+                <td colspan="8" class="text-center">Không tìm thấy sản phẩm phù hợp.</td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
 
+{{-- Bootstrap pagination --}}
+
+<div class="d-flex justify-content-center mt-4">
+    {{ $paginator->links('pagination::bootstrap-5') }}
+</div>
+
+                    </div>
+
+
+
+
+                </div>
+                <!--end::Row-->
             </div>
-            <!-- /.col-md-6 -->
-        </div>
-        <!--end::Row-->
-    </div>
-    <!--end::Container-->
+            <!--end::Container-->
+
+            <div class="app-content">
+
+                <!--begin::Container-->
+                <div class="container-fluid">
+                    <!--begin::Row-->
+                    <div class="row">
+
+
+
+
+                    </div>
+                    <!-- /.col-md-6 -->
+                </div>
+                <!--end::Row-->
+            </div>
+            <!--end::Container-->
 
 
 
 
 
-    <!--end::App Content-->
+            <!--end::App Content-->
 
 
-    </main>
-    <!--end::App Main-->
+        </main>
+        <!--end::App Main-->
     </div>
     <!--begin::Footer-->
     <footer class="app-footer">
@@ -281,7 +501,35 @@
     <!--end::OverlayScrollbars Configure-->
     <!-- OPTIONAL SCRIPTS -->
 
+<!-- Đặt mã AJAX trong thẻ <script> ngay trước thẻ đóng </body> -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Bao gồm jQuery nếu chưa có -->
 
+
+<style>
+.modal {
+    display: none; /* Ẩn modal theo mặc định */
+    position: fixed;
+    z-index: 1; /* Đảm bảo modal nằm trên các nội dung khác */
+    left: 0;
+    top: 20%;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+   
+}
+
+.modal-content {
+    background-color: #fefefe; /* Nền trắng */
+    margin: auto; /* Canh giữa theo cả trục dọc và ngang */
+    padding: 20px;
+    border: 1px solid #888; /* Viền nhạt */
+    width: 300px; /* Chiều rộng modal */
+    height: 300px; /* Chiều cao modal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Bóng nhẹ để nổi bật */
+    border-radius: 0; /* Loại bỏ góc bo tròn */
+}
+
+</style>
 </body>
 <!--end::Body-->
 

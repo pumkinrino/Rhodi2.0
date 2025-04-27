@@ -13,9 +13,18 @@ class AdBrandController extends Controller
      */
     public function index()
     {
-        // Lấy tất cả brands, mới nhất trước
-        $brands = DB::table('brand')->orderBy('brand_id', 'desc')->get();
-        return view('admin.products.brand', compact('brands'));
+        // Lấy từ khóa tìm kiếm từ request
+        $search = request('search');
+        $perPage = request('perPage', 15); // Số lượng bản ghi trên mỗi trang, mặc định là 15
+    
+        // Truy vấn tất cả thương hiệu và lọc theo từ khóa tìm kiếm nếu có
+        $brands = DB::table('brand')
+            ->where('brand_name', 'like', '%' . $search . '%') // Lọc theo tên thương hiệu
+            ->orderBy('brand_id', 'desc') // Sắp xếp theo brand_id giảm dần
+            ->paginate($perPage); // Phân trang theo số lượng bản ghi trên mỗi trang
+    
+        // Trả về view với dữ liệu thương hiệu
+        return view('admin.products.brand', compact('brands', 'search', 'perPage'));
     }
 
     /**

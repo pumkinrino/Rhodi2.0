@@ -135,11 +135,26 @@ Route::delete('/admin/products/voucher/{id}', [AdVoucherController::class, 'dest
  Route::get('/products/{product_id}/edit', [AdProductController::class, 'edit'])->name('products.edit');
  Route::put('/products/{product_id}', [AdProductController::class, 'update'])->name('products.update');
  Route::delete('/products/{product_id}', [AdProductController::class, 'destroy'])->name('products.destroy');
+// Route để xử lý việc bù hàng
+Route::post('/products/{product_detail_id}/add-stock', [AdProductController::class, 'addStock'])
+    ->name('products.addStock');
+
+
 
 
  Route::get('products/{product_id}/details', [AdProductDetailController::class, 'index'])
  ->name('products.details.index');
  Route::post('products/{product_id}/details', [AdProductDetailController::class, 'store'])
  ->name('products.details.store');
+ 
+
+ Route::put('/products/details/{productDetailId}/update-status', [AdProductDetailController::class, 'updateStatus'])
+    ->name('products.details.updateStatus');  // Cập nhật trạng thái chi tiết sản phẩm
+
+    Route::post('/products/details/{productDetailId}/restock', [AdProductDetailController::class, 'restock'])->name('product.restock');
+
+    // Route cập nhật chi tiết sản phẩm
+Route::put('/products/details/{product_detail_id}', [AdProductDetailController::class, 'update'])
+->name('products.details.update');
 
 });
