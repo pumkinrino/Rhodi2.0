@@ -42,7 +42,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./index3.html" class="nav-link active">
+                                    <a href="{{ route('admin.dashboard') }}" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Dashboard v3</p>
                                     </a>
@@ -50,9 +50,9 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="./generate/theme.html" class="nav-link">
+                            <a href="{{ route('admin.products.voucher.index') }}" class="nav-link">
                                 <i class="nav-icon bi bi-palette"></i>
-                                <p>Theme Generate</p>
+                                <p>Voucher</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -65,23 +65,31 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="./widgets/small-box.html" class="nav-link">
+                                    <a href="{{ route('admin.products.product') }}" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>All Products</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./widgets/info-box.html" class="nav-link">
+                                    <a href="{{ route('admin.products.brand.index') }}" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
-                                        <p>info Box</p>
+                                        <p>Manage Brands</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./widgets/cards.html" class="nav-link">
+                                    <a href="{{route(name: 'admin.categories.index')}}" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
-                                        <p>Cards</p>
+                                        <p>Manage Categories</p>
                                     </a>
                                 </li>
+                            
+                                <li class="nav-item">
+                                    <a href="./widgets/cards.html" class="nav-link">
+                                        <i class="nav-icon bi bi-circle"></i>
+                                        <p>Inactive Products</p>
+                                    </a>
+                                </li>
+                                
                             </ul>
                         </li>
                         <li class="nav-item">
