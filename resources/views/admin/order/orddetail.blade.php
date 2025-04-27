@@ -59,39 +59,113 @@
 
 
                     <!-- Nội dung chín -->
+                    <div class="container">
+                        <h1>Chi tiết đơn hàng</h1>
+
+                        @if (isset($error))
+                            <div class="alert alert-danger">
+                                {{ $error }}
+                            </div>
+                        @else
+                                                <!-- Hiển thị thông tin chi tiết đơn hàng -->
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Order ID</th>
+                                                            <th>Ngày Đặt Hàng</th>
+                                                            <th>Tên Khách Hàng</th>
+                                                            <th>Email Khách Hàng</th>
+                                                            <th>Sản phẩm</th>
+                                                            <th>Size</th>
+                                                            <th>Màu sắc</th>
+                                                            <th>Số lượng</th>
+                                                            <th>Đơn giá</th>
+                                                            <th>Tổng</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @php
+                                                            $total = 0; // Khởi tạo biến tổng số tiền
+                                                        @endphp
+                                                        @foreach ($orderDetails as $orderDetail)
+                                                            <tr>
+                                                                <td>{{ $orderDetail->order_id }}</td>
+                                                                <td>{{ $orderDetail->order_date }}</td>
+                                                                <td>{{ $orderDetail->customer_name }}</td>
+                                                                <td>{{ $orderDetail->customer_email }}</td>
+                                                                <td>{{ $orderDetail->product_name }}</td>
+                                                                <td>{{ $orderDetail->size }}</td>
+                                                                <td>{{ $orderDetail->color }}</td>
+                                                                <td>{{ $orderDetail->quantity }}</td>
+                                                                <td>{{ number_format($orderDetail->unit_price, 2) }}</td>
+                                                                <td>{{ number_format($orderDetail->subtotal, 2) }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        @php
+                                                            // Cộng dồn tổng số tiền từ các sản phẩm trong đơn hàng
+                                                            $total += $orderDetail->subtotal;
+                                                        @endphp
+                                                    </tbody>
+                                                </table>
 
 
+                                                <!-- Hiển thị thông tin mã giảm giá nếu có -->
+                                                @if ($orderDetails[0]->voucher_code)
+                                                    <div class="mt-3">
+                                                        <h4>Thông tin mã giảm giá:</h4>
+                                                        <p><strong>Mã giảm giá:</strong> {{ $orderDetails[0]->voucher_code }}</p>
+                                                        <p><strong>Loại giảm giá:</strong> {{ ucfirst($orderDetails[0]->discount_type) }}</p>
+                                                        <p><strong>Mức giảm tối đa:</strong> {{ number_format($orderDetails[0]->max_discount, 2) }}
+                                                            VND</p>
+                                                        <h4>Tổng số tiền sản phẩm trước giảmgiảm: {{ number_format($total, 2) }} VND</h4>
+                                                    </div>
+                                                @endif
+
+                        @endif
+                        <!-- Hiển thị tổng số tiền của đơn hàng -->
+                        <div class="mt-3">
+                            <h4>Tổng số tiền: {{ number_format($orderDetails[0]->total_amount, 2) }} VND</h4>
+                        </div>
+
+                    </div>
+
+
+
+
+
+
+
+                </div>
+                <!--end::Row-->
             </div>
-            <!--end::Row-->
-    </div>
-    <!--end::Container-->
+            <!--end::Container-->
 
-    <div class="app-content">
+            <div class="app-content">
 
-        <!--begin::Container-->
-        <div class="container-fluid">
-            <!--begin::Row-->
-            <div class="row">
+                <!--begin::Container-->
+                <div class="container-fluid">
+                    <!--begin::Row-->
+                    <div class="row">
 
 
 
 
+                    </div>
+                    <!-- /.col-md-6 -->
+                </div>
+                <!--end::Row-->
             </div>
-            <!-- /.col-md-6 -->
-        </div>
-        <!--end::Row-->
-    </div>
-    <!--end::Container-->
+            <!--end::Container-->
 
 
 
 
 
-    <!--end::App Content-->
+            <!--end::App Content-->
 
 
-    </main>
-    <!--end::App Main-->
+        </main>
+        <!--end::App Main-->
     </div>
     <!--begin::Footer-->
     <footer class="app-footer">
