@@ -9,6 +9,7 @@ class ProductDetail extends Model
 {
     protected $table = 'product_detail';
     protected $primaryKey = 'product_detail_id';
+    public $timestamps = false;
 
     protected $fillable = [
         'product_id',

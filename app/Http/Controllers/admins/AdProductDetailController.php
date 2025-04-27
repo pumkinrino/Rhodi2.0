@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Services\FormatService;
 use Illuminate\Http\Request;
-use App\Models\ProductDetail;
+use App\Models\users\ProductDetail;
 use App\Models\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Brand;

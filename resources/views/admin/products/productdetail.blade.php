@@ -20,6 +20,7 @@
     @include('components.admin.linkLTE')
 
     @vite(['resources/css/cssadminlte/adminlte.css', 'resources/js/jsadminlte/adminlte.js'])
+ 
 </head>
 
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
