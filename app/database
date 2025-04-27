@@ -1,4 +1,4 @@
--- Tạo cơ sở dữ liệu
+
 CREATE DATABASE rhodi;
 USE rhodi;
 
@@ -84,20 +84,6 @@ CREATE TABLE payment_method (
     status ENUM('active', 'inactive') DEFAULT 'active'
 );
 
--- Bảng shipping_address (địa chỉ giao hàng)
-CREATE TABLE shipping_address (
-    address_id INT PRIMARY KEY AUTO_INCREMENT,
-    customer_id INT,
-    full_name VARCHAR(100),
-    phone VARCHAR(20),
-    address_line TEXT,
-    city VARCHAR(100),
-    district VARCHAR(100),
-    postal_code VARCHAR(20),
-    is_default BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
-);
-
 -- Bảng voucher (mã giảm giá)
 CREATE TABLE voucher (
     voucher_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -120,7 +106,6 @@ CREATE TABLE orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
     customer_id INT,
     admin_id INT,
-    shipping_address_id INT,
     voucher_id INT DEFAULT NULL,
     order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     total_amount DECIMAL(60,2) CHECK (total_amount >= 0),
@@ -132,7 +117,6 @@ CREATE TABLE orders (
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
     FOREIGN KEY (admin_id) REFERENCES admin(admin_id),
     FOREIGN KEY (payment_method_id) REFERENCES payment_method(payment_method_id),
-    FOREIGN KEY (shipping_address_id) REFERENCES shipping_address(address_id),
     FOREIGN KEY (voucher_id) REFERENCES voucher(voucher_id)
 );
 
@@ -148,8 +132,6 @@ CREATE TABLE order_detail (
     FOREIGN KEY (product_code) REFERENCES product_detail(product_code)
 );
 
-
-
 -- Bảng cart (giỏ hàng)
 CREATE TABLE cart (
     cart_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -161,3 +143,4 @@ CREATE TABLE cart (
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
     FOREIGN KEY (product_code) REFERENCES product_detail(product_code)
 );
+

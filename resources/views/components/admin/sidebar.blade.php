@@ -88,6 +88,12 @@
                             </ul>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('admin.orders.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-clipboard-fill"></i>
+                                <p>Order</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-clipboard-fill"></i>
                                 <p>
@@ -143,9 +149,9 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon bi bi-tree-fill"></i>
+                                <i class="nav-icon bi bi-clipboard-fill"></i>
                                 <p>
-                                    UI Elements
+                                    Order
                                     <i class="nav-arrow bi bi-chevron-right"></i>
                                 </p>
                             </a>
@@ -153,7 +159,7 @@
                                 <li class="nav-item">
                                     <a href="./UI/general.html" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
-                                        <p>General</p>
+                                        <p>Order</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">

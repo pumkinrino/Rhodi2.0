@@ -63,7 +63,18 @@
                     <!-- Button Thêm Voucher -->
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addVoucherModal">Thêm
                         Voucher</button>
+                        <form action="{{ route('admin.products.voucher.index') }}" method="GET">
+    <!-- Input tìm kiếm voucher -->
+    <input type="text" name="search" value="{{ request()->input('search') }}" placeholder="Tìm kiếm theo mã voucher">
 
+    <!-- Dropdown chọn số lượng voucher hiển thị mỗi trang -->
+    <select name="per_page">
+        <option value="10" {{ request()->input('per_page') == 10 ? 'selected' : '' }}>10</option>
+        <option value="15" {{ request()->input('per_page') == 15 ? 'selected' : '' }}>15</option>
+    </select>
+
+    <button type="submit">Tìm kiếm</button>
+</form>
                     <!-- Modal Thêm Voucher -->
                     <div class="modal fade" id="addVoucherModal" tabindex="-1" aria-labelledby="addVoucherModalLabel"
                         aria-hidden="true">

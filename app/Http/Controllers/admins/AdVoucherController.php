@@ -11,13 +11,25 @@ class AdVoucherController extends Controller
     /**
      * Hiển thị danh sách voucher và form thêm voucher.
      */
-    public function index()
-    {
-        // Lấy danh sách tất cả các voucher
-        $vouchers = DB::table('voucher')->orderBy('created_at', 'desc')->get();
 
-        return view('admin.products.voucher', compact('vouchers'));
-    }
+    public function index(Request $request)
+{
+    // Lấy giá trị số voucher mỗi trang từ request, mặc định là 10
+    $perPage = $request->input('per_page', 10); // Mặc định là 10 nếu không có giá trị
+
+    // Lấy giá trị tìm kiếm voucher từ request
+    $search = $request->input('search', '');
+
+    // Lấy danh sách voucher, có điều kiện tìm kiếm theo mã voucher, và phân trang
+    $vouchers = DB::table('voucher')
+                  ->when($search, function($query, $search) {
+                      return $query->where('code', 'like', '%' . $search . '%');
+                  })
+                  ->orderBy('created_at', 'desc')
+                  ->paginate($perPage);
+
+    return view('admin.products.voucher', compact('vouchers'));
+}
 
     /**
      * Lưu voucher mới vào cơ sở dữ liệu.

@@ -17,7 +17,7 @@ use App\Http\Controllers\admins\AdminAuthController;
 use App\Http\Controllers\admins\AdProductDetailController;
 use App\Http\Middleware\RedirectIfAdminAuthenticated;
 use App\Http\Middleware\AdminAuth;
-
+use App\Http\Controllers\both\OrderController;
 
 
 Route::get('/', function () {
@@ -166,4 +166,19 @@ Route::post('/products/{product_detail_id}/add-stock', [AdProductDetailControlle
 Route::put('/products/details/{product_detail_id}', [AdProductDetailController::class, 'update'])
 ->name('products.details.update');
 
+
+//Route quản lý đơn hàng
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+// routes thay đổi trạng thái đơn hàng
+Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])
+     ->name('orders.updateStatus');
+
+// routes thay đổi trạng thái thanh toán
+Route::put('orders/{order}/payment-status', [OrderController::class, 'updatePaymentStatus'])
+    ->name('orders.updatePaymentStatus');
+
+
+
+    
 });

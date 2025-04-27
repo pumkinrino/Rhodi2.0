@@ -1,0 +1,109 @@
+<!-- resources/views/admin/order/partials/orders_table.blade.php -->
+<table class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Order Date</th>
+            <th>Status</th>
+            <th>Payment Status</th>
+            <th>Voucher</th>
+            <th>Total Amount</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @forelse($orders as $order)
+        <tr>
+            <td>{{ $order->order_id }}</td>
+            <td>{{ $order->full_name }}</td>
+            <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d-m-Y H:i') }}</td>
+            <td>{{ ucfirst($order->status) }}</td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                            type="button"
+                            id="paymentStatusDropdown{{ $order->order_id }}"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        {{ ucfirst($order->payment_status) }}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="paymentStatusDropdown{{ $order->order_id }}">
+                        @foreach(['unpaid','paid','refunded'] as $ps)
+                            @if($ps !== $order->payment_status)
+                                <li>
+                                    <form action="{{ route('admin.orders.updatePaymentStatus', $order->order_id) }}"
+                                          method="POST" class="m-0">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="payment_status" value="{{ $ps }}">
+                                        <button type="submit" class="dropdown-item">
+                                            {{ ucfirst($ps) }}
+                                        </button>
+                                    </form>
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+            </td>
+            <td>{{ $order->voucher_code ?? '-' }}</td>
+            <td>{{ number_format($order->total_amount, 0, ',', '.') }} VND</td>
+            <td>
+                {{-- Order status transition --}}
+                @if($order->status === 'pending')
+                    <form action="{{ route('admin.orders.updateStatus', $order->order_id) }}" method="POST" class="d-inline">
+                        @csrf @method('PUT')
+                        <input type="hidden" name="status" value="confirmed">
+                        <button class="btn btn-sm btn-success">Confirm</button>
+                    </form>
+                    <form action="{{ route('admin.orders.updateStatus', $order->order_id) }}" method="POST" class="d-inline">
+                        @csrf @method('PUT')
+                        <input type="hidden" name="status" value="cancelled">
+                        <button class="btn btn-sm btn-danger">Cancel</button>
+                    </form>
+
+                @elseif($order->status === 'confirmed')
+                    <form action="{{ route('admin.orders.updateStatus', $order->order_id) }}" method="POST" class="d-inline">
+                        @csrf @method('PUT')
+                        <input type="hidden" name="status" value="deliver">
+                        <button class="btn btn-sm btn-primary">Deliver</button>
+                    </form>
+
+
+                @elseif($order->status === 'deliver')
+                    <form action="{{ route('admin.orders.updateStatus', $order->order_id) }}" method="POST" class="d-inline">
+                        @csrf @method('PUT')
+                        <input type="hidden" name="status" value="delivered">
+                        <button class="btn btn-sm btn-success">Mark Delivered</button>
+                    </form>
+
+                @elseif($order->status === 'delivered')
+                    <form action="{{ route('admin.orders.updateStatus', $order->order_id) }}" method="POST" class="d-inline">
+                        @csrf @method('PUT')
+                        <input type="hidden" name="status" value="completed">
+                        <button class="btn btn-sm btn-primary">Complete</button>
+                    </form>
+             
+                    @elseif($order->status === 'completed')
+                    <form action="{{ route('admin.orders.updateStatus', $order->order_id) }}" method="POST" class="d-inline">
+                        @csrf @method('PUT')
+                        <input type="hidden" name="status" value="cancelled">
+                        <button class="btn btn-sm btn-danger">Product return</button>
+                    </form>
+
+                @endif
+
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="8" class="text-center">No orders found.</td>
+        </tr>
+    @endforelse
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-center">
+    {{ $orders->appends(request()->all())->links() }}
+</div>

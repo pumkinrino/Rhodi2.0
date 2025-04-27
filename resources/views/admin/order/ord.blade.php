@@ -60,6 +60,65 @@
 
                     <!-- Nội dung chín -->
 
+                    <div class="container mt-4">
+    <h2 class="mb-4">Quản lý Đơn hàng</h2>
+
+    <!-- Form tìm kiếm + chọn per_page -->
+    <form method="GET" action="{{ route('admin.orders.index') }}" class="mb-4">
+        <div class="row g-2 align-items-end">
+            <div class="col-auto">
+                <label for="order_id" class="form-label">Order ID</label>
+                <input type="text" name="order_id" id="order_id" class="form-control"
+                    value="{{ request('order_id') }}" placeholder="Order ID">
+            </div>
+            <div class="col-auto">
+                <label for="full_name" class="form-label">Customer</label>
+                <input type="text" name="full_name" id="full_name" class="form-control"
+                    value="{{ request('full_name') }}" placeholder="Full Name">
+            </div>
+            <div class="col-auto">
+                <label for="per_page" class="form-label">Per Page</label>
+                <select name="per_page" id="per_page" class="form-select">
+                    <option value="10" {{ request('per_page')==10?'selected':'' }}>10</option>
+                    <option value="15" {{ request('per_page')==15?'selected':'' }}>15</option>
+                    <option value="20" {{ request('per_page')==20?'selected':'' }}>20</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Tab Nav -->
+    <ul class="nav nav-tabs" id="orderTab" role="tablist">
+        <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#pending">Pending</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#confirmed">Confirmed</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#deliver">Deliver/Delivered</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#completed">Completed</a></li>
+        <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#cancelled">Cancelled</a></li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content pt-3">
+        <div class="tab-pane fade show active" id="pending">
+            @include('admin.order.partials.orders_table', ['orders' => $pendingOrders])
+        </div>
+        <div class="tab-pane fade" id="confirmed">
+            @include('admin.order.partials.orders_table', ['orders' => $confirmedOrders])
+        </div>
+        <div class="tab-pane fade" id="deliver">
+            @include('admin.order.partials.orders_table', ['orders' => $deliverOrders])
+        </div>
+        <div class="tab-pane fade" id="completed">
+            @include('admin.order.partials.orders_table', ['orders' => $completedOrders])
+        </div>
+        <div class="tab-pane fade" id="cancelled">
+            @include('admin.order.partials.orders_table', ['orders' => $cancelledOrders])
+        </div>
+    </div>
+</div>
+                    
 
             </div>
             <!--end::Row-->

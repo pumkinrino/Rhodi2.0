@@ -67,6 +67,7 @@
                         <div class="bg-white">
                             <h2 class="text-2xl font-bold mb-4">Thông tin cá nhân</h2>
                             <ul class="space-y-4">
+                                <li><strong>Code:</strong> {{ $admin -> code }}</li>
                                 <li><strong>Email:</strong> {{ $admin->email }}</li>
                                 <li><strong>Họ và tên:</strong> {{ $admin->full_name }}</li>
                                 <li><strong>Số điện thoại:</strong> {{ $admin->phone }}</li>
