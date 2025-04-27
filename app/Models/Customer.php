@@ -1,21 +1,18 @@
 <?php
-
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
-class Customer extends Model
+class Customer extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
-    // Chỉ định tên bảng
-    protected $table = 'customer';
+    protected $table = 'customer'; // Chỉ định bảng
+    protected $primaryKey = 'customer_id'; // Khóa chính
+    public $timestamps = false; // Nếu không dùng timestamps
 
-    // Chỉ định khóa chính
-    protected $primaryKey = 'customer_id';
-
-    // Các trường được phép gán giá trị hàng loạt
     protected $fillable = [
         'customer_id',
         'full_name',
@@ -25,12 +22,10 @@ class Customer extends Model
         'password'
     ];
 
-    // Ẩn trường mật khẩu khi trả về dữ liệu model
-    protected $hidden = [
-        'password'
-    ];
+    protected $hidden = ['password'];
 
-    // Nếu bảng sử dụng cột created_at, updated_at tự động, bạn không cần tắt timestamps.
-    // Nếu không dùng, có thể tắt timestamps bằng:
-    public $timestamps = false;
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
 }

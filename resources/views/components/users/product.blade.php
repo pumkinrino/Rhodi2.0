@@ -36,15 +36,16 @@
                                         </div>
                                         <div class="button-wrapper">
                                             <div class="button-group text-center">
-                                                <button type="button" class="btn btn-primary btn-cart">
-                                                    <i class="material-icons">shopping_cart</i>
-                                                    <span>Add to cart</span>
-                                                </button>
+                                                <form action="{{ route('product.show', $product->product_id) }}" method="get">
+                                                    <button type="submit" class="btn btn-primary btn-cart">
+                                                        <i class="material-icons">shopping_cart</i>
+                                                        <span>Detail</span>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             @endforeach
                         </div>
                     </section>

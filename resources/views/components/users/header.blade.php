@@ -21,7 +21,7 @@
                     </div>
                     <div class="header-middle float-md-left float-sm-left float-xs-none" style="top: 3%;">
                         <div class="logo">
-                            <a href="#"><img src="/image/20240820_jRhCzjIO.jpg" alt="logo" width="200" height="50"></a>
+                            <a href="/"><img src="/image/20240820_jRhCzjIO.jpg" alt="logo" width="200" height="50"></a>
                         </div>
                     </div>
                     <div class="header-right d-flex d-xs-flex d-sm-flex justify-content-end float-right">
@@ -93,7 +93,7 @@
                             <!-- Links -->
                             <ul class="navbar-nav m-auto justify-content-center">
                                 <li class="nav-item dropdown active">
-                                    <a class="nav-link  text-uppercase" href="#">
+                                    <a class="nav-link  text-uppercase" href="/">
                                         Home
                                         <span class="sr-only">(current)</span> </a>
                                 </li>

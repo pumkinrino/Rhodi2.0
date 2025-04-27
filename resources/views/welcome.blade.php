@@ -8,8 +8,7 @@
     <meta name="description" content="Demo powered by Templatetrip">
     <meta name="author" content="">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    @include('components.users.dashboardlink',['count' => $count ])
+    @include('components.users.dashboardlink')
 
 </head>
 
@@ -31,7 +30,7 @@
                         </a>
                         <div class="slider-content-wrap center effect_top">
                             <div class="slider-title mb-20 text-capitalize float-left w-100">our specials</div>
-                            <div class="slider-subtitle mb-50 text-capitalize float-left w-100">fashion trend</div>
+                            <div class="slider-subtitle mb-50 text-capitalize float-left w-100 text-shadow">fashion trend</div>
                             <div class="slider-button text-uppercase float-left w-100"><a href=" #">Shop Now</a></div>
                         </div>
                     </div>

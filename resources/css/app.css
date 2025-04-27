@@ -19,3 +19,14 @@
     padding: 15px;
     background: rgba(255, 255, 255, 0.9);
 }
+/* phần hiển thị cho giỏ hàng */
+.scrollable-cart {
+    max-height: 400px; /* Điều chỉnh chiều cao sao cho phù hợp với giao diện */
+    overflow-y:auto;  /* Cho phép cuộn dọc */
+}
+
+/* dung trong color option cua product detail */
+.color-option:active{
+    box-shadow: 20px;
+    
+}

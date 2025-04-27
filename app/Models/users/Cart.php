@@ -6,17 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-    // Khai báo bảng và khóa chính nếu tên khác với convention
     protected $table = 'cart';
-    protected $fillable = ['product_code', 'quantity'];
+    protected $primaryKey = 'cart_id';
 
-    // Định nghĩa quan hệ: Một danh mục có nhiều sản phẩm
-    public function products()
+    protected $fillable = ['customer_id', 'product_code', 'quantity', 'added_at', 'updated_at'];
+
+    public $timestamps = false;
+
+    // Liên kết với ProductDetail qua product_code
+    public function productDetail()
     {
-        // Tham số thứ nhất: Model Product  
-        // Tham số thứ hai: Tên trường khóa ngoại trong bảng products  
-        // Tham số thứ ba: Tên trường khóa chính trong bảng category
-        return $this->hasMany(Product::class, 'category_id', 'category_id');
-        
+        return $this->belongsTo(ProductDetail::class, 'product_code', 'product_code');
     }
+    public function customer()
+{
+    return $this->belongsTo(Customer::class, 'customer_id', 'id');
 }
+
+}
+

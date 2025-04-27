@@ -4,33 +4,57 @@
         <span class="ttcount">{{ $count }}</span> </button>
     <div id="cart-dropdown" class="cart-menu">
         <ul class="w-100 float-left">
-            <li>
-                <table class="table table-striped">
-                    <tbody>
-                        <tr>
-                            <td class="text-center"><a href="#"><img
-                                        src="https://demo.templatetrip.com/Html/HTML001_victoria/img/products/01.jpg"
-                                        alt="01" title="01" height="104" width="80"></a>
-                            </td>
-                            <td class="text-left product-name"><a href="#">aliquam quaerat
-                                    voluptatem</a>
-                                <div class="quantity float-left w-100">
-                                    <span class="cart-qty">1 × </span>
-                                    <span class="text-left price"> $20.00</span>
-                                </div>
-                            </td>
-                            <td class="text-center close"><a class="close-cart"><i class="material-icons">close</i></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <li class="scrollable-cart" class="scrollable-cart">
+                @if(count($cartlist) > 0)
+                    @foreach ($cartlist as $item)
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <td class="text-center ">
+                                        <a href="{{ route('product.show', $item->productDetail->product->product_id) }}">
+                                            <img src="{{ $item->productDetail->product->main_image }}" height="104" width="50">
+                                        </a>
+                                    </td>
+                                    <td class="text-left product-name">
+                                        <a href="{{ route('product.show', $item->productDetail->product->product_id) }}">
+                                            {{ $item->productDetail->dname }}
+                                        </a>
+                                        <div class="quantity float-left w-100">
+                                            <span class="cart-qty">{{ $item->quantity }} x</span>
+                                            <span class="text-left price">
+                                                {{ number_format($item->productDetail->selling_price, 0, ',', '.') }}$
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center close">
+                                        <a class="close-cart" data-id="{{ $item->cart_id }}">
+                                            <i class="material-icons">close</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    @endforeach
+                @else
+                    <p class="text-center">Giỏ hàng của bạn đang trống</p>
+                @endif
             </li>
             <li>
+                @php
+                    $total = 0;
+                @endphp
+
+                @foreach ($cartlist as $item)
+                                @php
+                                    $total += $item->quantity * $item->productDetail->selling_price;
+                                @endphp
+                @endforeach
+
                 <table class="table price mb-30">
                     <tbody>
                         <tr>
                             <td class="text-left"><strong>Total</strong></td>
-                            <td class="text-right"><strong>$2,122.00</strong></td>
+                            <td class="text-right"><strong>{{number_format($total, 0, ',', '.')}}$</strong></td>
                         </tr>
                     </tbody>
                 </table>
@@ -46,3 +70,29 @@
         </ul>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.close-cart').forEach(button => {
+        button.addEventListener('click', function () {
+            event.stopPropagation();
+            let cartId = this.getAttribute('data-id');
+
+            fetch("{{ route('cart.remove') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ cart_id: cartId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        this.closest('tr').remove();
+                    } else {
+                        alert(data.message);
+                    }
+                });
+        });
+    });
+</script>
