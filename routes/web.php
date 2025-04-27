@@ -1,5 +1,8 @@
 <?php
+use App\Http\Controllers\ProductDetail;
 use App\Http\Controllers\users\ProductController;
+use App\Http\Controllers\users\CartController;
+use App\Http\Controllers\users\ProductDetailController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\users\CustomerAuthController;
@@ -8,7 +11,6 @@ use App\Http\Controllers\admins\AdCategoryController;
 use App\Http\Middleware\UserCheckLogin;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\admins\AdBrandController;
-use App\Http\Controllers\users\CartController;
 use App\Http\Controllers\admins\AdVoucherController;
 use App\Http\Controllers\admins\AdProductController;
 use App\Http\Controllers\admins\AdminAuthController;
@@ -47,17 +49,20 @@ Route::prefix('customer')->group(function () {
 
 });
 
+// Route sp và giỏ hàng
+Route::post('/cart/add', [CartController::class, 'addtocart'])->name('cart.add');
+Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+Route::get('/cart/list', [CartController::class, 'getList'])->name('cart.list');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 
-//Route Cho sản phẩm và giỏ hàng
 
-
-Route::get('product-category/{id}', [ProductController::class, 'showWithCate'])
+//Route xem sp theo phân loại
+    Route::get('product-category/{id}', [CategoryController::class, 'show'])
     ->name('category.products');
 
+//Route chi tiết sp
 
-Route::get('product-category/{id}', [CategoryController::class, 'show'])
-    ->name('category.products');
-
+Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
 
 
 

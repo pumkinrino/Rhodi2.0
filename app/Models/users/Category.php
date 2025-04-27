@@ -19,6 +19,6 @@ class Category extends Model
         // Tham số thứ hai: Tên trường khóa ngoại trong bảng products  
         // Tham số thứ ba: Tên trường khóa chính trong bảng category
         return $this->hasMany(Product::class, 'category_id', 'category_id');
-        
+            
     }
 }

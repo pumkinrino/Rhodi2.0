@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models\users;
-
+use App\Models\users\ProductDetail;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -16,4 +16,10 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
+    
+    public function productDetail()
+    {
+        return $this->hasMany(ProductDetail::class, 'product_id', 'product_id');
+    }
+
 }

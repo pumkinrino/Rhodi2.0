@@ -20,7 +20,7 @@
                     </div>
                     <div class="checkbox-link d-flex justify-content-between">
                         <div class="left-col">
-                            <input type="checkbox" id="remember_me"><label for="remember_me">Remember Me</label>
+                            <input type="checkbox" id="remember_me" name="remember"><label for="remember_me">Remember Me</label>
                         </div>
                         <div class="right-col"><a href="#">Forget Password?</a></div>
                     </div>

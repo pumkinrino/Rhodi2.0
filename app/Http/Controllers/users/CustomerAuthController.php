@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\users; // Namespace của controller
 
 use App\Http\Controllers\Controller; // Import class Controller
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -65,9 +66,9 @@ class CustomerAuthController extends Controller
         $customer = Customer::where('email', $credentials['email'])->first();
 
         // Kiểm tra mật khẩu
-        if ($customer && Hash::check($credentials['password'], $customer->password)) {
+        if (Auth::guard('customer')->attempt($credentials)) {
             session(['customer' => $customer]); // Lưu thông tin người dùng vào session
-            return redirect()->route('welcome'); // Chuyển hướng đến trang chính
+            return redirect()->intended(route('welcome')); // Chuyển hướng đến trang chính
         }
 
         return back()->with('error', 'Email hoặc mật khẩu không chính xác!'); // Thông báo lỗi
