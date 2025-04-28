@@ -78,7 +78,7 @@
 
                         <!-- Thêm modal cho chi tiết sản phẩm -->
                         <div class="container mt-4">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal"
                                 data-bs-target="#productDetailModal">
                                 Thêm chi tiết sản phẩm
                             </button>
@@ -165,8 +165,7 @@
     $filtered = $groupedProductDetails->filter(function ($details) use ($search) {
         $detail = $details->first();
         return !$search ||
-            stripos($detail->size, $search) !== false ||
-            stripos($detail->color, $search) !== false;
+            stripos($detail->product_code, $search) !== false;
     });
 
     $sliced = $filtered->slice(($currentPage - 1) * $perPage, $perPage);
@@ -186,7 +185,7 @@
 <form method="GET" class="row mb-3">
     <div class="col-md-4">
         <input type="text" name="search" value="{{ request('search') }}" class="form-control"
-               placeholder="Tìm theo size hoặc màu...">
+               placeholder="Tìm theo mã">
     </div>
     <div class="col-md-2">
         <button class="btn btn-primary" type="submit">Tìm kiếm</button>
@@ -208,6 +207,7 @@
             <th>Size</th>
             <th>Màu</th>
             <th>Giá gốc</th>
+            <th>Giá bán</th>
             <th>Tồn kho</th>
             <th style="width: 10%;">Ảnh</th>
             <th>Trạng thái</th>
@@ -224,6 +224,7 @@
                 <td>{{ $detail->size }}</td>
                 <td>{{ $detail->color }}</td>
                 <td>{{ number_format($detail->cost, 0, ',', '.') }} đ</td>
+                <td>{{ number_format($detail->selling_price, 0, ',', '.') }} đ</td>
                 <td>{{ $detail->stock_quantity }}</td>
                 <td>
                     @if($details->count() > 0)

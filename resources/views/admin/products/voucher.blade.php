@@ -54,6 +54,13 @@
                         @elseif(session('error'))
                             <div class="alert alert-danger">{{ session('error') }}</div>
                         @endif
+                        @if (session('warning'))
+                            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
+                                <p class="font-bold">Cảnh báo</p>
+                                <p>{{ session('warning') }}</p>
+                            </div>
+                        @endif
+
                     </div>
 
 
@@ -63,18 +70,19 @@
                     <!-- Button Thêm Voucher -->
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addVoucherModal">Thêm
                         Voucher</button>
-                        <form action="{{ route('admin.products.voucher.index') }}" method="GET">
-    <!-- Input tìm kiếm voucher -->
-    <input type="text" name="search" value="{{ request()->input('search') }}" placeholder="Tìm kiếm theo mã voucher">
+                    <form action="{{ route('admin.products.voucher.index') }}" method="GET">
+                        <!-- Input tìm kiếm voucher -->
+                        <input type="text" name="search" value="{{ request()->input('search') }}"
+                            placeholder="Tìm kiếm theo mã voucher">
 
-    <!-- Dropdown chọn số lượng voucher hiển thị mỗi trang -->
-    <select name="per_page">
-        <option value="10" {{ request()->input('per_page') == 10 ? 'selected' : '' }}>10</option>
-        <option value="15" {{ request()->input('per_page') == 15 ? 'selected' : '' }}>15</option>
-    </select>
+                        <!-- Dropdown chọn số lượng voucher hiển thị mỗi trang -->
+                        <select name="per_page">
+                            <option value="10" {{ request()->input('per_page') == 10 ? 'selected' : '' }}>10</option>
+                            <option value="15" {{ request()->input('per_page') == 15 ? 'selected' : '' }}>15</option>
+                        </select>
 
-    <button type="submit">Tìm kiếm</button>
-</form>
+                        <button type="submit">Tìm kiếm</button>
+                    </form>
                     <!-- Modal Thêm Voucher -->
                     <div class="modal fade" id="addVoucherModal" tabindex="-1" aria-labelledby="addVoucherModalLabel"
                         aria-hidden="true">
@@ -238,10 +246,12 @@
                             </thead>
                             <tbody>
                                 @foreach($vouchers as $voucher)
+
+
                                     <tr>
                                         <td>{{ $voucher->code }}</td>
                                         <td>
-                                        {{ $voucher-> discount_type }}
+                                            {{ $voucher->discount_type }}
                                             @if($voucher->discount_type == 'percentage')
                                                 (Phần trăm)
                                             @else
@@ -426,10 +436,15 @@
                                         </td>
                                         </td>
                                     </tr>
+
                                 @endforeach
                             </tbody>
                         </table>
+                                    {{-- Bootstrap pagination --}}
 
+                                    <div class="d-flex justify-content-center mt-4">
+    {{ $vouchers->links('pagination::bootstrap-5') }}
+</div>
                     </div>
                 </div>
             </div>

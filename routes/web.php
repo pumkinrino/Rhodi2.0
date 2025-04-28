@@ -21,6 +21,9 @@ use App\Http\Controllers\both\OrderController;
 use App\Http\Controllers\both\PaymentMethodController;
 use App\Http\Controllers\both\OrderDetailController;
 use App\Http\Controllers\users\CheckOutController;
+use App\Http\Controllers\both\PosController;
+
+
 
 Route::get('/', [ProductController::class, 'index'])->name('welcome');
 
@@ -173,7 +176,7 @@ Route::prefix('admin')->name('admin.')->middleware([AdminAuth::class])->group(fu
     Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])
         ->name('orders.updateStatus');
 
-
+     Route::get('order-detail/{orderDetailId}', [OrderDetailController::class, 'show'])->name('order.details.show');
 
     // Route hiển thị danh sách phương thức thanh toán
     Route::get('payment-methods', [PaymentMethodController::class, 'index'])->name('payment-methods.index');
@@ -190,7 +193,42 @@ Route::prefix('admin')->name('admin.')->middleware([AdminAuth::class])->group(fu
 
 
 
-    // Route hiển thị chi tiết đơn hàng
-    Route::get('order/details/{orderDetailId}', [OrderDetailController::class, 'show'])->name('order.details.show');
+ // Hiển thị giao diện thanh toán
+ Route::get('pos', [PosController::class, 'index'])->name('pos.index');
+    
+ // Tìm kiếm sản phẩm
+ Route::get('search-products', [PosController::class, 'searchProducts'])->name('pos.searchProducts');
+ 
+ // Tìm kiếm khách hàng
+ Route::get('search-customers', [PosController::class, 'searchCustomers'])->name('pos.searchCustomers');
+ 
+ // Thêm sản phẩm vào giỏ hàng
+ Route::post('add-to-cart', [PosController::class, 'addProductToCart'])->name('pos.addToCart');
+ 
+ // Xóa sản phẩm khỏi giỏ hàng
+ Route::delete('remove-from-cart/{productCode}', [PosController::class, 'removeProductFromCart'])->name('pos.removeFromCart');
+ 
+ // Thanh toán và hoàn tất đơn hàng
+ Route::post('checkout', [PosController::class, 'checkout'])->name('pos.checkout');
+ 
 
-});
+
+
+
+
+ // Trang giao diện thanh toán
+Route::get('pos', [PosController::class, 'index'])->name('pos.index');
+
+// Tìm kiếm khách hàng (AJAX)
+Route::post('pos/search-customer', [PosController::class, 'searchCustomers'])->name('pos.search.customer');
+
+// Thêm sản phẩm vào giỏ hàng bằng product_code (không dùng ajax)
+Route::post('pos/add-product', [PosController::class, 'addProductToCart'])->name('pos.add.product');
+
+// Xóa sản phẩm khỏi giỏ hàng
+Route::get('pos/remove-product/{productCode}', [PosController::class, 'removeProductFromCart'])->name('pos.remove.product');
+
+// Thanh toán
+Route::post('pos/checkout', [PosController::class, 'checkout'])->name('pos.checkout');
+}
+);

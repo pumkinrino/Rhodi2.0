@@ -58,7 +58,6 @@
 
 
 
-                    <!-- Nội dung chín -->
 
                     <!-- Button mở modal -->
                     <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
@@ -129,7 +128,29 @@
                         </div>
                     </div>
 
+                    <form method="GET" action="{{ route('admin.products.product') }}" class="row g-3 mb-4">
+    <div class="col-4">
+        <input 
+            type="text" 
+            name="search" 
+            class="form-control" 
+            placeholder="Tìm kiếm sản phẩm dựa theo tên, chi tiết thể loại hoặc brand..." 
+            value="{{ request('search') }}"
+        >
+    </div>
 
+    <div class="col-auto">
+        <select name="per_page" class="form-select" onchange="this.form.submit()">
+            <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10 sản phẩm/trang</option>
+            <option value="15" {{ request('per_page') == 15 ? 'selected' : '' }}>15 sản phẩm/trang</option>
+            <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20 sản phẩm/trang</option>
+        </select>
+    </div>
+
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+</form>
                     <!-- Bảng sản phẩm -->
 
                     <table class="table table-striped">
@@ -270,7 +291,10 @@
 
                 </div>
 
-
+{{-- Bootstrap 5 pagination --}}
+<div class="d-flex justify-content-center mt-4">
+    {{ $products->withQueryString()->links('pagination::bootstrap-5') }}
+</div>
 
 
             </div>

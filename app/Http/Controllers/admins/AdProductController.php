@@ -12,21 +12,38 @@ use Illuminate\Support\Facades\DB;
 class AdProductController extends Controller
 {
     // Hiển thị danh sách sản phẩm
-    public function index()
+
+    public function index(Request $request)
     {
-        $products = DB::table('products')
+        $query = DB::table('products')
             ->join('category', 'products.category_id', '=', 'category.category_id')
             ->join('brand', 'products.brand_id', '=', 'brand.brand_id')
-            ->select('products.*', 'category.category_name', 'category.category_detail_name', 'brand.brand_name')
-            ->get();
+            ->select('products.*', 'category.category_name', 'category.category_detail_name', 'brand.brand_name');
+    
+        // Nếu có tìm kiếm
+       if ($request->filled('search')) {
+        $search = $request->search;
 
+        $query->where('products.pname', 'like', "%$search%")
+              ->orWhere('category.category_detail_name', 'like', "%$search%")
+              ->orWhere('brand.brand_name', 'like', "%$search%");
+    }
+    
+        // Số sản phẩm mỗi trang (mặc định là 10)
+        $perPage = $request->input('per_page', 10);
+    
+        // Phân trang
+        $products = $query->paginate($perPage);
+    
+        // Giữ lại query search, per_page khi phân trang
+        $products->appends($request->all());
+    
         // Lấy tất cả danh mục và thương hiệu
         $categories = Category::all();
         $brands = Brand::all();
-
+    
         return view('admin.products.product', compact('products', 'categories', 'brands'));
     }
-
     // // Hiển thị form thêm sản phẩm mới
     // public function create()
     // {

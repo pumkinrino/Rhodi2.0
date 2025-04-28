@@ -223,7 +223,7 @@ class AdProductDetailController extends Controller
         $productNameSlug = Str::slug($productName, ''); // Sử dụng Str::slug để loại bỏ dấu và khoảng trắng
     
         // Tạo mã sản phẩm theo công thức
-        return strtolower($productNameSlug) . '-' . strtolower($brandName) . '-' . strtolower($size) . '-' . strtolower($color);
+        return strtolower($productNameSlug) . strtolower($brandName)  . strtolower($size)  . strtolower($color);
     }
     
 

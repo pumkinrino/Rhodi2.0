@@ -117,7 +117,7 @@
                                                         <p><strong>Loại giảm giá:</strong> {{ ucfirst($orderDetails[0]->discount_type) }}</p>
                                                         <p><strong>Mức giảm tối đa:</strong> {{ number_format($orderDetails[0]->max_discount, 2) }}
                                                             VND</p>
-                                                        <h4>Tổng số tiền sản phẩm trước giảmgiảm: {{ number_format($total, 2) }} VND</h4>
+                                                        <h4>Tổng số tiền sản phẩm trước giảmg là: {{ number_format($total, 2) }} VND</h4>
                                                     </div>
                                                 @endif
 
