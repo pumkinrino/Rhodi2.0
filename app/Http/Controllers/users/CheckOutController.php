@@ -23,8 +23,11 @@ class CheckOutController extends Controller
         }
     }
 
-    public function processCheckout(Request $request)
+    public function applydiscount(Request $request)
     {
-        // Xử lý logic đặt hàng
+        $userId = Auth::guard('customer')->id();
+        $cart = Cart::where('customer_id', $userId)->get();
+        $total = sum($cart->quantity * $cart->productDetail->selling_price);
+
     }
 }

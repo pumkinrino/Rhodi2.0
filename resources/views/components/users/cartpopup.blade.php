@@ -26,17 +26,22 @@
                                             </span>
                                         </div>
                                     </td>
-                                    <td class="text-center close">
-                                        <a class="close-cart" data-id="{{ $item->cart_id }}">
-                                            <i class="material-icons">close</i>
-                                        </a>
+                                    <td class=" ml-2 text-center close text-white btn btn-rounded">
+                                        <form action="{{ route('cart.remove') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="cart_id" value="{{ $item->cart_id }}">
+                                            <button type="submit" class="close-cart border btn btn-rounded ">
+                                                x
+                                            </button>
+                                        </form>
                                     </td>
+
                                 </tr>
                             </tbody>
                         </table>
                     @endforeach
                 @else
-                    <p class="text-center">Giỏ hàng của bạn đang trống</p>
+                    <p class="text-center">You have nothing in here :(</p>
                 @endif
             </li>
             <li>
@@ -71,7 +76,7 @@
     </div>
 </div>
 
-<script>
+<!-- <script>
     document.querySelectorAll('.close-cart').forEach(button => {
         button.addEventListener('click', function () {
             event.stopPropagation();
@@ -95,4 +100,4 @@
                 });
         });
     });
-</script>
+</script> -->

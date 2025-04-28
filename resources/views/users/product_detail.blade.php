@@ -7,7 +7,7 @@
     <meta name="description" content="Demo powered by Templatetrip">
     <meta name="author" content="">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+
     @include('components.users.dashboardlink')
 
 </head>
@@ -64,12 +64,12 @@
                                 {{number_format($min->selling_price, 0, ',', '.') }}-{{number_format($max->selling_price, 0, ',', '.') }}
                             </div>
                             <br>
-                            @foreach ($productDetail->where('status', 'available') as $price)
-                                <div id="price-{{ $loop->index }}" class="regular-price ml-5 price-info"
-                                    style="display: none;">
-                                    {{number_format($price->selling_price, 0, ',', '.') }}
+                            @foreach ($productDetail->where('status', 'available') as $index => $price)
+                                <div id="price-{{ $index }}" class="regular-price ml-5 price-info" style="display: none;">
+                                    {{ number_format($price->selling_price, 0, ',', '.') }}
                                 </div>
                             @endforeach
+
                         </div>
                         <div class="product-variants float-left w-100">
                             <div class="col-md-3 col-sm-6 col-xs-12 size-options d-flex align-items-center">
@@ -201,6 +201,8 @@
             const colorOptions = document.querySelectorAll(".color-option a");
             const selectedColorInput = document.getElementById("selected-color");
             const selectedSizeInput = document.getElementById("selected-size");
+            document.querySelectorAll(".color-option").forEach(item => item.style.display = "none");
+
 
             // Xử lý khi thay đổi size
             sizeSelect.addEventListener("change", function () {
@@ -229,6 +231,81 @@
 
                     // Gán giá trị màu vào input ẩn
                     selectedColorInput.value = this.getAttribute("data-color");
+                });
+            });
+
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sizeSelect = document.getElementById("size-select");
+            const colorLinks = document.querySelectorAll(".color-categories li.color-option a");
+            const colorOptions = document.querySelectorAll(".color-categories li.color-option");
+            const priceInfos = document.querySelectorAll(".price-info");
+            const generalPrice = document.querySelector(".general-price"); // khối giá chung
+            const selectedColorInput = document.getElementById("selected-color");
+            const selectedSizeInput = document.getElementById("selected-size");
+
+            // Ban đầu, hiển thị giá chung, chắc chắn ẩn các variant price
+            if (generalPrice) { generalPrice.style.display = "block"; }
+            priceInfos.forEach(price => price.style.display = "none");
+
+            // Khi người dùng chọn size
+            sizeSelect.addEventListener("change", function () {
+                let selectedSize = this.value;
+                selectedSizeInput.value = selectedSize;
+
+                // Khi thay đổi size, hiển thị lại giá chung vì chưa chọn màu
+                if (generalPrice) { generalPrice.style.display = "block"; }
+
+                // Ẩn tất cả các color-option và xóa class active
+                colorOptions.forEach(option => {
+                    option.style.display = "none";
+                    option.classList.remove("active");
+                });
+
+                // Hiển thị các tùy chọn màu có thuộc tính data-size phù hợp với size được chọn
+                let matchingColors = document.querySelectorAll(`.color-option[data-size="${selectedSize}"]`);
+                matchingColors.forEach(option => {
+                    option.style.display = "inline-block";
+                });
+
+                // Ẩn các khối giá chi tiết, chờ khi chọn màu hiện giá tương ứng
+                priceInfos.forEach(price => price.style.display = "none");
+            });
+
+            // Khi người dùng click vào màu
+            colorLinks.forEach(link => {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    // Loại bỏ active của tất cả color-option, thêm active cho phần tử được click
+                    colorOptions.forEach(li => li.classList.remove("active"));
+                    this.parentElement.classList.add("active");
+
+                    // Cập nhật input ẩn với giá trị màu
+                    let chosenColor = this.getAttribute("data-color");
+                    selectedColorInput.value = chosenColor;
+
+                    // Khi chọn màu, ẩn khối giá chung
+                    if (generalPrice) { generalPrice.style.display = "none"; }
+
+                    // Ẩn tất cả các khối giá chi tiết
+                    priceInfos.forEach(price => price.style.display = "none");
+
+                    // Hiển thị khối giá tương ứng dựa trên dữ liệu trong data-target
+                    let targetPriceId = this.getAttribute("data-target");
+                    if (targetPriceId) {
+                        let targetPrice = document.getElementById(targetPriceId);
+                        if (targetPrice) {
+                            targetPrice.style.display = "block";
+                        } else {
+                            console.warn("Không tìm thấy element với ID:", targetPriceId);
+                        }
+                    }
                 });
             });
         });

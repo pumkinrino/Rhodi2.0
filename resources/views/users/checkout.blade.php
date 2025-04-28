@@ -19,22 +19,36 @@
                     @foreach ($cart as $item)
                         <div class="list-group-item d-flex justify-content-between lh-condensed">
                             <div>
-                                <h6 class="my-0">{{ $item -> productDetail->dname }}</h6>
+                                <h6 class="my-0">{{ $item->productDetail->dname }}</h6>
                             </div>
-                            <span class="text-muted"></span>
+                            <span
+                                class="text-muted">{{ number_format(($item->productDetail->selling_price), 0, ',', '.') }}$</span>
                         </div>
                     @endforeach
 
                     <div class="list-group-item d-flex justify-content-between">
                         <div class="text-success">
                             <h6 class="my-0">Promo code</h6>
-                            <small>EXAMPLECODE</small>
+                            <small><input type="text" class="border" placeholder="paste your coupon here"></small>
+                            <button class="btn btn-sm btn-outline-primary">check</button>
                         </div>
-                        <span class="text-success">-$5</span>
+
+                        <span class="text-success">
+
+                        </span>
                     </div>
                     <div class="list-group-item d-flex justify-content-between">
-                        <strong>Total (USD)</strong>
-                        <strong>$35</strong>
+                        @php
+                            $total = 0;
+                        @endphp
+
+                        @foreach ($cart as $item)
+                                                @php
+                                                    $total += $item->quantity * $item->productDetail->selling_price;
+                                                @endphp
+                        @endforeach
+                        <strong>Total (VND)</strong>
+                        <strong>{{ number_format($total,0,',','.') }}$</strong>
                     </div>
                     <div class="list-group-item  justify-content-between">
                         <div class="custom-control custom-radio" id="checkbox-card">

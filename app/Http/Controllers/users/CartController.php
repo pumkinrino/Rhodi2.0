@@ -7,24 +7,27 @@ use App\Models\users\Cart;
 use App\Models\users\ProductDetail;
 class CartController extends Controller
 {
-
-    public function getList()
+    public function getCart()
     {
-        // điều kiện như trên
-        $cart = Cart::where('customer_id', session('customer')->customer_id)->get();
-        // trả về danh sách sp trong giỏ
-        return $cart;
+        $customer = session('customer');
+        if (!$customer) {
+            return collect([]);
+        }
+        return Cart::with('productDetail.product')
+            ->where('customer_id', $customer->customer_id)
+            ->get();
     }
 
     public function addToCart(Request $request)
     {
-        // Kiểm tra đăng nhập
+
+        // check user hợp lệ
         $userId = Auth::guard('customer')->id();
         if (!$userId) {
             return redirect()->back()->with('error', 'You need to login to continue!');
         }
 
-        // Tìm `product_code` dựa vào `product_id`, `size`, `color`
+        // tìm code bằng prid sie và màu
         $productDetail = ProductDetail::where([
             ['product_id', $request->product_id],
             ['size', $request->size],
@@ -33,24 +36,24 @@ class CartController extends Controller
 
 
         if (!$productDetail) {
-            return redirect()->back()->with('error', 'Product not fount!');
+            return redirect()->back()->with('error', 'choose type of product!');
         }
 
-        // Sử dụng `product_code` tìm thấy
+        // dùng cái vừa tìm
         $productCode = $productDetail->product_code;
 
-        // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
+        // check tồn tại
         $existingCartItem = Cart::where([
             ['customer_id', $userId],
             ['product_code', $productCode],
         ])->first();
 
         if ($existingCartItem) {
-            // Nếu sản phẩm đã tồn tại, cập nhật số lượng
+            // tồn tại thì thêm 1 thg nưa vào
             $existingCartItem->quantity += $request->quantity;
             $existingCartItem->save();
         } else {
-            // Thêm sản phẩm mới vào giỏ hàng
+            // không tồn tại thì tạo mới
             Cart::create([
                 'customer_id' => $userId,
                 'product_code' => $productCode,
@@ -60,22 +63,12 @@ class CartController extends Controller
                 'added_at' => now()
             ]);
         }
-        return redirect()->back()->with('success','product had been added to your cart!');
+        return redirect()->back()->with('success', 'product had been added to your cart!');
     }
 
 
 
-    // Trong CartController.php
-    public function getCart()
-    {
-        $customer = session('customer');
-        if (!$customer) {
-            return collect([]); // hoặc trả về một collection rỗng
-        }
-        return Cart::with('productDetail.product')
-            ->where('customer_id', $customer->customer_id)
-            ->get();
-    }
+
 
     public function remove(Request $request)
     {
@@ -83,9 +76,9 @@ class CartController extends Controller
 
         if ($cartItem) {
             $cartItem->delete();
-            return redirect()->back()->with('success','product deleted from cart!');
+            return redirect()->back()->with('success', 'product deleted from cart!');
         }
-        return redirect()->back()->with('error','product not found!');
+        return redirect()->back()->with('error', 'product not found!');
     }
 
 
