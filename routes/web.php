@@ -20,12 +20,8 @@ use App\Http\Middleware\AdminAuth;
 use App\Http\Controllers\both\OrderController;
 
 
-Route::get('/', function () {
-    $products = (new ProductController)->index();
-    $cart = (new CartController)->index();
+Route::get('/', [ProductController::class, 'index'])->name('welcome');
 
-    return view('welcome', compact('products', 'cart')); // Trả về view với dữ liệu
-})->name('welcome');
 
 Route::get('/product-details/{id}', [ProductController::class, 'showDetail'])->name('product.details');
 
