@@ -393,13 +393,7 @@
     </div>
 </div>
 
-<table id="productTable">
-    <tbody>
-        <tr id="emptyRow">
-            <td colspan="8" class="text-center">Không tìm thấy sản phẩm phù hợp.</td>
-        </tr>
-    </tbody>
-</table>
+
 
 
 

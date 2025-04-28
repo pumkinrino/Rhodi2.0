@@ -63,7 +63,7 @@
                 <form action="https://demo.templatetrip.com/Html/HTML001_victoria/cart_page.html">
                     <input class="btn pull-left mt_10 btn-primary btn-rounded w-100" value="View cart" type="submit">
                 </form>
-                <form action="https://demo.templatetrip.com/Html/HTML001_victoria/checkout_page.html">
+                <form action="{{route('checkout.view')}}">
                     <input class="btn pull-right mt_10 btn-primary btn-rounded w-100" value="Checkout" type="submit">
                 </form>
             </li>
