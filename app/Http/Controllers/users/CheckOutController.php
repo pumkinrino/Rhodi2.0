@@ -11,14 +11,14 @@ class CheckOutController extends Controller
 {
     public function index()
     {
-        $user = Auth::guard('customer')->id();
+        $userId = Auth::guard('customer')->id();
         // điều kiện như trên
-        if (!$user) {
+        if (!$userId) {
             return redirect()->back()->with('error', 'Bạn cần đăng nhập để thêm vào giỏ hàng!');
 
         } else {
-            $cart = Cart::where('customer_id', Auth::guard('customer')->id())->get();
-            // trả về danh sách sp trong giỏ
+            $cart = Cart::where('customer_id', $userId)->get();
+            logger($cart);
             return view('users.checkout', compact('cart'));
         }
     }

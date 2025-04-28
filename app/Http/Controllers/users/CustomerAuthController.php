@@ -67,10 +67,10 @@ class CustomerAuthController extends Controller
         // Kiểm tra mật khẩu
         if (Auth::guard('customer')->attempt($credentials)) {
             session(['customer' => $customer]); // Lưu thông tin người dùng vào session
-            return redirect()->intended(route('welcome')); // Chuyển hướng đến trang chính
+            return back()->with('success', 'welcome to our shop'); // Chuyển hướng đến trang chính
         }
 
-        return back()->with('error', 'Email hoặc mật khẩu không chính xác!'); // Thông báo lỗi
+        return back()->with('error', 'Email or Password incorrect!'); // Thông báo lỗi
     }
 
     // Đăng xuất
@@ -79,7 +79,7 @@ class CustomerAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         Auth::logout();
-        return redirect()->route('welcome');
+        return redirect()->route('welcome')->with("success",'logged out');
 
     }
 }

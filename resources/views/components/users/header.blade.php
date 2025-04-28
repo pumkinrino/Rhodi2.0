@@ -48,9 +48,6 @@
                                             <li><b
                                                     style="color: black; text-decoration: underline;">{{ session('customer')->full_name }}</b>
                                             </li>
-                                            <li><b
-                                                    style="color: black; text-decoration: underline;">{{ session('customer')->customer_id }}</b>
-                                            </li>
                                             <li><a href="#" class="modal-view button"><button
                                                         style="background: none; border: none; color: inherit; padding: 0; cursor: pointer;">logout</button></a>
                                             </li>
@@ -71,8 +68,15 @@
                         @include('components.users.cartpopup')
                     </div>
                     @if(session('error'))
-                        <div style="z-index: 5;" class="alert alert-danger text-center header-right d-flex d-xs-flex d-sm-flex justify-content-end float-right">
+                        <div style="z-index: 5;"
+                            class="alert alert-danger text-center header-right d-flex d-xs-flex d-sm-flex justify-content-end float-right">
                             {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if(session('success'))
+                        <div style="z-index: 5;" class="alert alert-success text-center header-right d-flex d-xs-flex d-sm-flex justify-content-end float-right">
+                            {{ session('success') }}
                         </div>
                     @endif
                 </div>

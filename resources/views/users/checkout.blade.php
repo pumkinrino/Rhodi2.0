@@ -7,6 +7,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @include('components.users.dashboardlink')
 </head>
+@include('components.users.header')
 <div class="checkout-inner float-left w-100">
     <div class="container">
         <div class="row">
@@ -15,18 +16,15 @@
                     <span>Your cart</span>
                 </h4>
                 <div class="list-group mb-3">
-                    <div class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0">aliquam quaerat voluptatem</h6>
+                    @foreach ($cart as $item)
+                        <div class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0">{{ $item -> productDetail->dname }}</h6>
+                            </div>
+                            <span class="text-muted"></span>
                         </div>
-                        <span class="text-muted">$20</span>
-                    </div>
-                    <div class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0">voluptas sit aspernatur</h6>
-                        </div>
-                        <span class="text-muted">$20</span>
-                    </div>
+                    @endforeach
+
                     <div class="list-group-item d-flex justify-content-between">
                         <div class="text-success">
                             <h6 class="my-0">Promo code</h6>

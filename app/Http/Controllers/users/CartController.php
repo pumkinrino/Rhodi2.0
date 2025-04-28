@@ -21,7 +21,7 @@ class CartController extends Controller
         // Kiểm tra đăng nhập
         $userId = Auth::guard('customer')->id();
         if (!$userId) {
-            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để thêm vào giỏ hàng!');
+            return redirect()->back()->with('error', 'You need to login to continue!');
         }
 
         // Tìm `product_code` dựa vào `product_id`, `size`, `color`
@@ -33,7 +33,7 @@ class CartController extends Controller
 
 
         if (!$productDetail) {
-            return redirect()->back()->with('error', 'Sản phẩm không tồn tại!');
+            return redirect()->back()->with('error', 'Product not fount!');
         }
 
         // Sử dụng `product_code` tìm thấy
@@ -60,7 +60,7 @@ class CartController extends Controller
                 'added_at' => now()
             ]);
         }
-        return redirect()->back();
+        return redirect()->back()->with('success','product had been added to your cart!');
     }
 
 
@@ -83,9 +83,9 @@ class CartController extends Controller
 
         if ($cartItem) {
             $cartItem->delete();
-            return redirect()->intended('welcome');
+            return redirect()->back()->with('success','product deleted from cart!');
         }
-        return redirect()->intended('welcome');
+        return redirect()->back()->with('error','product not found!');
     }
 
 

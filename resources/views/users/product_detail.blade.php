@@ -212,7 +212,7 @@
 
                 // Hiển thị màu phù hợp với size được chọn
                 document.querySelectorAll(`.color-option[data-size="${selectedSize}"]`).forEach(item => {
-                    item.style.display = "block";
+                    item.style.display = "inline-block";
                 });
             });
 
