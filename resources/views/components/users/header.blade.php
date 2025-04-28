@@ -70,23 +70,17 @@
                         </div>
                         @include('components.users.cartpopup')
                     </div>
+                    @if(session('error'))
+                        <div style="z-index: 5;" class="alert alert-danger text-center header-right d-flex d-xs-flex d-sm-flex justify-content-end float-right">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                 </div>
             </div>
             <div class="menu">
                 <div class="container">
                     <!-- Navbar -->
                     <nav class="navbar navbar-expand-lg navbar-light d-sm-none d-xs-none d-lg-block navbar-full">
-
-                        <!-- Navbar brand -->
-                        <a class="navbar-brand text-uppercase d-none" href="#">Navbar</a>
-
-                        <!-- Collapse button -->
-                        <button class="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbarSupportedContent2" aria-controls="navbarSupportedContent2"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-
                         <!-- Collapsible content -->
                         <div class="collapse navbar-collapse">
 

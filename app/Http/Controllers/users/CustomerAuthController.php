@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\users; // Namespace của controller
-
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller; // Import class Controller
 use Auth;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Customer;
@@ -75,9 +74,12 @@ class CustomerAuthController extends Controller
     }
 
     // Đăng xuất
-    public function logout()
+    public function logout(request $request)
     {
-        session()->forget('customer');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        Auth::logout();
         return redirect()->route('welcome');
+
     }
 }

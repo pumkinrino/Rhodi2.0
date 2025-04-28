@@ -11,8 +11,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \Flasher\Laravel\Middleware\SessionMiddleware::class,
-        \Flasher\Laravel\Middleware\FlasherMiddleware::class,
+
     ];
 
     protected $middlewareGroups = [

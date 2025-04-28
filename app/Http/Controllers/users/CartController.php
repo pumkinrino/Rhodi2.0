@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers\users;
 use Illuminate\Support\Facades\Auth;
-use Flasher\Laravel\Facade\Flasher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\users\Cart;
@@ -61,7 +60,6 @@ class CartController extends Controller
                 'added_at' => now()
             ]);
         }
-        Flasher::addSuccess('Sản phẩm đã được thêm vào giỏ hàng!');
         return redirect()->back();
     }
 
@@ -87,7 +85,6 @@ class CartController extends Controller
             $cartItem->delete();
             return redirect()->intended('welcome');
         }
-        flash()->error("cant delete from cart there's somethings wrong");
         return redirect()->intended('welcome');
     }
 

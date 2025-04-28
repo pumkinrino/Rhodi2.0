@@ -35,18 +35,13 @@ Route::get('/product-details/{id}', [ProductController::class, 'showDetail'])->n
 Route::prefix('customer')->group(function () {
 
     Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])
-        ->middleware(UserCheckLogin::class)
+        ->Middleware(UserCheckLogin::class)
         ->name('customer.login');
     Route::post('/login', [CustomerAuthController::class, 'login'])
         ->Middleware(UserCheckLogin::class);
     Route::get('/register', [CustomerAuthController::class, 'showRegisterForm'])->name('customer.register');
     Route::post('/register', [CustomerAuthController::class, 'register']);
     Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
-
-
-
-
-
 });
 
 
@@ -57,7 +52,7 @@ Route::get('/cart/list', [CartController::class, 'getList'])->name('cart.list');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 
 //Route trang thanh toans
-Route::get('/checkout', [CheckOutController::class, 'index'])->name('checkout.view');
+Route::get('/checkout', [CheckOutController::class, 'index'])->name('checkout');
 Route::post('/checkout/process', [CheckOutController::class, 'processCheckout'])->name('checkout.process');
 
 //Route xem sp theo phân loại

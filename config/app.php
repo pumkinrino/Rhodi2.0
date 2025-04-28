@@ -126,7 +126,6 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        Flasher\Laravel\FlasherServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -159,7 +158,6 @@ return [
          */
         // Provider riêng của bạn
         App\Providers\ViewServiceProvider::class,
-        Flasher\Laravel\FlasherServiceProvider::class,
     ],
 
 

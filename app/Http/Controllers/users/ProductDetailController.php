@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Controllers\users;
-use Flasher\Laravel\Facade\Flasher;
 use App\Http\Controllers\Controller;
 use App\Models\users\ProductDetail;
 use App\Models\users\Product;
@@ -17,7 +16,6 @@ class ProductDetailController extends Controller
         $min = ProductDetail::orderBy('selling_price', 'asc')->where('product_id', $id)->first();
         $max = ProductDetail::orderBy('selling_price', 'desc')->where('product_id', $id)->first();
         if ($productDetail->isEmpty()) {
-            Flasher::error('Not found');
             return redirect()->back();
         }
 
