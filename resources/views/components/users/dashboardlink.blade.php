@@ -31,3 +31,4 @@
 <script src="https://demo.templatetrip.com/Html/HTML001_victoria/js/imagesloaded.pkgd.min.js"></script>
 <script src="https://demo.templatetrip.com/Html/HTML001_victoria/js/jquery.zoom.min.js"></script>
 <script src="https://demo.templatetrip.com/Html/HTML001_victoria/js/jquery.lazy.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

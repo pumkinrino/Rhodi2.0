@@ -55,8 +55,6 @@
                                     </ul>
                                 @else
                                     <ul>
-                                        <li><a href="https://demo.templatetrip.com/Html/HTML001_victoria/my-account.html"
-                                                class="text-capitalize">my account</a></li>
                                         <li><a href="#" class="modal-view button" data-toggle="modal"
                                                 data-target="#modalRegisterForm">Register</a></li>
                                         <li><a href="#" class="modal-view button" data-toggle="modal"
