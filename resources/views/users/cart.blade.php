@@ -70,7 +70,7 @@
                         <div class="table-total-amount">
                             <div class="single-total-content d-flex justify-content-between float-left w-100">
                                 <strong>Subtotal</strong>
-                                <span class="c-total-price">{{ number_format($total,0,',','.') }}$</span>
+                                <span class="c-total-price">{{ number_format($total, 0, ',', '.') }}$</span>
                             </div>
                             <div class="single-total-content d-flex justify-content-between float-left w-100">
                                 <strong>Shipping</strong>
@@ -78,10 +78,12 @@
                             </div>
                             <div class="single-total-content tt-total d-flex justify-content-between float-left w-100">
                                 <strong>Total</strong>
-                                <span class="c-total-price">{{ number_format($total+30000,0,',','.') }}$</span>
+                                <span class="c-total-price">{{ number_format($total + 30000, 0, ',', '.') }}$</span>
                             </div>
-                            <a href="checkout_page.html" class="btn btn-primary float-left w-100 text-center">Proceed to
-                                checkout</a>
+                            <form action="{{route('checkout')}}">
+                                <input class="btn pull-right mt_10 btn-primary btn-rounded w-100" value="Checkout"
+                                    type="submit">
+                            </form>
                         </div>
                     </div>
                 </div>

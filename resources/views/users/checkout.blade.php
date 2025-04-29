@@ -82,7 +82,7 @@
 
                         <!-- Container QR code, ẩn mặc định -->
                         <div id="qr-code-container" class="text-center mb-3" style="display: none;">
-                            <img src="/path/to/your/qrcode.png" alt="QR Code" class="img-fluid"
+                            <img src="https://img.vietqr.io/image/mbbank-123456789-compact2.jpg?amount={{$total}}&addInfo=Chuyenkhoanthanhtoan&accountName=RHODI%20SHOP" alt="QR Code" class="img-fluid"
                                 style="max-width: 250px;">
                         </div>
                         <!-- Nút submit đặt hàng -->
@@ -98,21 +98,8 @@
 
                     <!-- Dropdown chọn địa chỉ đã lưu -->
                     <div class="mb-3">
-                        <label for="saved_address" class="form-label">Chọn địa chỉ giao hàng đã lưu:</label>
-                        <select name="saved_address_id" id="saved_address" class="form-select">
-                            <option value="">-- Chọn địa chỉ có sẵn --</option>
-                            @foreach ($addresses as $address)
-                                <option value="{{ $address->address_id }}">
-                                    {{ $address->full_name }} - {{ $address->address_line }} ({{ $address->postal_code }})
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <input type="checkbox" class="btn-check" id="otherAddressToggle" autocomplete="off"
-                            data-bs-toggle="collapse" data-bs-target="#collapseOtherAddress" aria-expanded="false"
-                            aria-controls="collapseOtherAddress">
-                        <label class="btn btn-outline-decondary" for="otherAddressToggle">Sử dụng địa chỉ khác</label>
+                        <label for="saved_address" class="form-label">Your order will deliver to this address:</label>
+                        <label for="address"><b>{{ $customer->address }}</b></label>
                     </div>
 
                     <!-- Phần collapse chứa các input nhập địa chỉ khác -->
