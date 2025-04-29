@@ -17,38 +17,44 @@ use App\Http\Controllers\Controller;
 class CheckOutController extends Controller
 {
     public function index()
-    {               
-         // Lấy đối tượng khách hàng đã đăng nhập
+    {
+        // Lấy đối tượng khách hàng đã đăng nhập
         $customer = Auth::guard('customer')->user();
-        // Lấy giỏ hàng của khách hàng dựa vào customer_id
-        $cart = Cart::where('customer_id', $customer->customer_id)->get();
-        $paymentMethods = PaymentMethod::get();
+
         // Nếu khách hàng chưa đăng nhập, chuyển hướng và thông báo lỗi
         if (!$customer) {
             return redirect()->route('login')->with('error', 'Please login first.');
         }
-        if(($cart -> count()) < 1){
-            return redirect()->back()->with('error', 'Please login first.');
-        }
-        // Lấy các địa chỉ giao hàng đã lưu trong bảng 'shipping_address'
-        $addresses = ShippingAddress::where('customer_id', $customer->customer_id)->get();
 
-        // Nếu không có địa chỉ nào được lưu sẵn, bạn có thể tạo một danh sách chứa địa chỉ mặc định từ thông tin trong bảng 'customer'
-        if ($addresses->isEmpty()) {
-            // Tạo một đối tượng giả (object) với các thông tin mặc định từ bảng customer
-            $addresses = collect([
-                (object) [
-                    'address_id' => $customer->customer_id, // Dùng customer_id làm ID tạm thời
-                    'full_name' => $customer->full_name,
-                    'address_line' => $customer->address, // Giả sử trường 'address' chứa địa chỉ mặc định
-                    'postal_code' => '', // Nếu không có thông tin mã bưu điện, để rỗng hoặc điều chỉnh cho phù hợp
-                ]
-            ]);
+        // Lấy giỏ hàng của khách hàng dựa vào customer_id
+        $cart = Cart::where('customer_id', $customer->customer_id)->get();
+        if ($cart->count() < 1) {
+            return redirect()->back()->with('error', 'Your cart is empty.');
         }
 
-        // Truyền cả giỏ hàng, thông tin khách hàng và danh sách địa chỉ sang view
+        // Lấy các phương thức thanh toán
+        $paymentMethods = PaymentMethod::all();
+
+        // Lấy địa chỉ giao hàng trực tiếp từ khách hàng (bảng customer)
+        // Nếu trường 'address' trống, thông báo họ cập nhật trước khi checkout
+        if (empty($customer->address)) {
+            return redirect()->back()->with('error', 'You must update your shipping address in your profile.');
+        }
+
+        // Tạo đối tượng addresses từ thông tin của khách hàng (chỉ có 1 địa chỉ duy nhất)
+        $addresses = collect([
+            (object) [
+                'address_id' => $customer->customer_id, // Dùng customer_id làm ID tạm thời
+                'full_name' => $customer->full_name,
+                'address_line' => $customer->address,      // Trường 'address' chứa địa chỉ của khách hàng
+                'postal_code' => ''                         // Nếu có thông tin chi tiết khác, cập nhật ở đây
+            ]
+        ]);
+
+        // Truyền cả giỏ hàng, thông tin khách hàng, danh sách phương thức thanh toán và địa chỉ sang view
         return view('users.checkout', compact('cart', 'customer', 'paymentMethods', 'addresses'));
     }
+
 
 
 
@@ -105,7 +111,7 @@ class CheckOutController extends Controller
     // Đổi tên phương thức này thành checkout() hoặc processCheckout() cho đúng route của bạn
     public function processCheckout(Request $request)
     {
-        // Lấy thông tin khách hàng đã đăng nhập
+        // Lấy thông tin khách hàng đã đăng nhập từ guard "customer"
         $user = Auth::guard('customer')->user();
 
         // Lấy các mặt hàng trong giỏ theo customer_id
@@ -116,28 +122,12 @@ class CheckOutController extends Controller
             return $item->quantity * $item->productDetail->selling_price;
         });
 
-        // Xử lý địa chỉ giao hàng:
-        // Nếu người dùng chọn địa chỉ đã lưu qua dropdown ("saved_address_id")
-        if ($request->filled('saved_address_id')) {
-            $shippingAddressId = $request->input('saved_address_id');
+        // Luôn dùng địa chỉ lưu trong bảng customer
+        if (empty($user->address)) {
+            // Nếu khách hàng chưa cập nhật địa chỉ thì chuyển hướng về trang profile hoặc trả về thông báo lỗi
+            return redirect()->back()->with('error', 'You have not saved your shipping address. Please update your profile.');
         }
-        // Nếu người dùng tick checkbox "use_other_address" và nhập địa chỉ mới
-        elseif ($request->has('use_other_address')) {
-            $newAddress = ShippingAddress::create([
-                'customer_id' => $user->customer_id,
-                'full_name' => $request->input('other_full_name'),
-                'phone' => $request->input('other_phone'),
-                'address_line' => $request->input('other_address_line'),
-                'city' => '',
-                $request->input('other_city'),
-                'district' => '',
-                $request->input('other_district'),
-                'postal_code' => '',
-            ]);
-            $shippingAddressId = $newAddress->address_id;
-        } else {
-            return redirect()->back()->with('error', 'Please select an existing shipping address or provide a new one.');
-        }
+        $shippingAddress = $user->address; // Ví dụ: "365 Trần Khát Chân, Hà Nội" hoặc chuỗi đầy đủ địa chỉ khác
 
         // Xử lý voucher (nếu có)
         $voucherId = null;
@@ -152,21 +142,21 @@ class CheckOutController extends Controller
             }
         }
 
-        // Lấy payment method id từ giá trị được truyền từ view
-        $paymentMethodId = $request->input('payment_method_id');
+        // Lấy phương thức thanh toán từ form (ví dụ tên input là "payment_method")
+        $paymentMethodId = $request->input('payment_method');
 
-        // Transaction: Tạo đơn hàng, các chi tiết đơn và xóa giỏ hàng
-        DB::transaction(function () use ($user, $shippingAddressId, $cartItems, $totalAmount, $voucherId, $paymentMethodId) {
-            // Tạo đơn hàng với payment_method_id được chọn từ form
+        // Thực hiện transaction: Tạo đơn hàng, đơn chi tiết và xóa giỏ hàng
+        DB::transaction(function () use ($user, $shippingAddress, $cartItems, $totalAmount, $voucherId, $paymentMethodId) {
+            // Tạo đơn hàng, lưu địa chỉ giao hàng lấy từ bảng customer
             $order = Order::create([
                 'customer_id' => $user->customer_id,
-                'shipping_address_id' => $shippingAddressId,
+                'shipping_address' => $shippingAddress,  // Đảm bảo bảng orders có cột shipping_address để lưu chuỗi địa chỉ
                 'voucher_id' => $voucherId,
                 'total_amount' => $totalAmount,
                 'payment_method_id' => $paymentMethodId,
             ]);
 
-            // Tạo chi tiết đơn hàng trải qua từng mặt hàng trong giỏ
+            // Tạo chi tiết đơn hàng cho từng mặt hàng trong giỏ
             foreach ($cartItems as $item) {
                 OrderDetail::create([
                     'order_id' => $order->order_id,
@@ -183,6 +173,7 @@ class CheckOutController extends Controller
 
         return redirect()->route('welcome')->with('success', 'Thank you for your order!');
     }
+
 
 
 }

@@ -136,6 +136,6 @@ CREATE TABLE cart (
     added_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
-    FOREIGN KEY (product_code) REFERENCES product_detail(product_code)
+    FOREIGN KEY (product_code) REFERENCES product_detail(product_code)  
 );
 
