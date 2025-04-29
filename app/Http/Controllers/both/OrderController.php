@@ -119,6 +119,7 @@ class OrderController extends Controller
             }
             return $query->select([
                 'orders.*',
+                'customer.address',
                 'customer.full_name',
                 'voucher.code as voucher_code',
                 'order_detail.*' // Thêm tất cả các cột từ bảng order_detail

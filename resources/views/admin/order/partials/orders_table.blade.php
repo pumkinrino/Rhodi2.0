@@ -4,6 +4,7 @@
         <tr>
             <th>Order ID</th>
             <th>Customer</th>
+            <th>Address</th>
             <th>Order Date</th>
             <th>Order Status</th>
             <th>Change Status</th>
@@ -20,6 +21,7 @@
             <td>{{ $order->order_id }}     <!-- Liên kết đến trang chi tiết đơn hàng -->
           </td>
             <td>{{ $order->full_name }}</td>
+            <td>{{ $order->address}}</td>
             <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d-m-Y H:i') }}</td>
             <td>{{ ucfirst($order->status) }}</td>
             <td>{{ $order -> payment_status }} </td>
