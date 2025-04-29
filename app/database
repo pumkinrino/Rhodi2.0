@@ -2,7 +2,6 @@
 CREATE DATABASE rhodi;
 USE rhodi;
 
--- Bảng admin (quản trị viên)
 CREATE TABLE admin (
     admin_id INT PRIMARY KEY AUTO_INCREMENT,
     code VARCHAR(50) NOT NULL UNIQUE,
@@ -15,7 +14,7 @@ CREATE TABLE admin (
     password VARCHAR(255)
 );
 
--- Bảng customer (khách hàng)
+
 CREATE TABLE customer (
     customer_id INT PRIMARY KEY AUTO_INCREMENT,
     full_name VARCHAR(100) NOT NULL,
@@ -26,14 +25,12 @@ CREATE TABLE customer (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Bảng category (danh mục sản phẩm)
 CREATE TABLE category (
     category_id INT PRIMARY KEY AUTO_INCREMENT,
     category_name VARCHAR(100) NOT NULL,
     category_detail_name VARCHAR(100)
 );
 
--- Bảng brand (thương hiệu sản phẩm)
 CREATE TABLE brand (
     brand_id INT PRIMARY KEY AUTO_INCREMENT,
     brand_name VARCHAR(100) NOT NULL UNIQUE,
@@ -52,7 +49,6 @@ CREATE TABLE products (
     FOREIGN KEY (brand_id) REFERENCES brand(brand_id)
 );
 
--- Bảng product_detail (chi tiết sản phẩm)
 CREATE TABLE product_detail (
     product_detail_id INT PRIMARY KEY AUTO_INCREMENT,
     product_id INT NOT NULL,
@@ -68,7 +64,7 @@ CREATE TABLE product_detail (
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
--- Bảng image (hình ảnh sản phẩm)
+
 CREATE TABLE image (
     image_id INT PRIMARY KEY AUTO_INCREMENT,
     product_code VARCHAR(50),
@@ -76,7 +72,7 @@ CREATE TABLE image (
     FOREIGN KEY (product_code) REFERENCES product_detail(product_code)
 );
 
--- Bảng payment_method (phương thức thanh toán)
+
 CREATE TABLE payment_method (
     payment_method_id INT PRIMARY KEY AUTO_INCREMENT,
     method_name VARCHAR(50) NOT NULL,
@@ -84,7 +80,7 @@ CREATE TABLE payment_method (
     status ENUM('active', 'inactive') DEFAULT 'active'
 );
 
--- Bảng voucher (mã giảm giá)
+
 CREATE TABLE voucher (
     voucher_id INT PRIMARY KEY AUTO_INCREMENT,
     code VARCHAR(50) NOT NULL UNIQUE,
@@ -101,7 +97,6 @@ CREATE TABLE voucher (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Bảng orders (đơn hàng)
 CREATE TABLE orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
     customer_id INT,
@@ -120,7 +115,7 @@ CREATE TABLE orders (
     FOREIGN KEY (voucher_id) REFERENCES voucher(voucher_id)
 );
 
--- Bảng order_detail (chi tiết đơn hàng)
+
 CREATE TABLE order_detail (
     order_detail_id INT PRIMARY KEY AUTO_INCREMENT,
     order_id INT NOT NULL,
@@ -132,7 +127,7 @@ CREATE TABLE order_detail (
     FOREIGN KEY (product_code) REFERENCES product_detail(product_code)
 );
 
--- Bảng cart (giỏ hàng)
+
 CREATE TABLE cart (
     cart_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT NOT NULL,
