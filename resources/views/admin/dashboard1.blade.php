@@ -59,82 +59,95 @@
 
 
                     <!-- Nội dung chín -->
+        
+<div class="p-6">
+    <h1 class="text-2xl font-bold mb-6">📈 Thống kê Doanh thu</h1>
 
-                    <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Quản lý Khách hàng</h2>
-        <span class="badge bg-primary fs-6">Tổng khách hàng: {{ $cus->total() }}</span>
-    </div>
-
-    <!-- Form tìm kiếm -->
-    <form method="GET" action="{{ route('admin.customers.index') }}" class="row g-3 mb-4">
-        <div class="col-md-4">
-            <input type="text" name="search" class="form-control" placeholder="Tìm kiếm theo tên, email, số điện thoại..." value="{{ request('search') }}">
+    {{-- Form chọn năm --}}
+    <form method="GET" class="flex items-center mb-6 space-x-4">
+        <div>
+            <label for="year" class="block text-sm font-medium">Năm:</label>
+            <input type="number" name="year" id="year" value="{{ request('year', now()->year) }}" class="border rounded px-3 py-2 w-28">
         </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-success w-100">Tìm kiếm</button>
-        </div>
+        <button type="submit" class="bg-blue-600 btn btn-primary text-white px-4 py-2 rounded hover:bg-blue-700">Xem thống kê</button>
     </form>
 
-    <!-- Bảng danh sách khách hàng -->
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Họ và tên</th>
-                    <th>Email</th>
-                    <th>Số điện thoại</th>
-                    <th>Địa chỉ</th>
-                    <th>Ngày tạo</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($cus as $c)
-                    <tr>
-                        <td>{{ $c->customer_id }}</td>
-                        <td>{{ $c->full_name }}</td>
-                        <td>{{ $c->email }}</td>
-                        <td>{{ $c->phone }}</td>
-                        <td>{{ $c->address }}</td>
-                        <td>
-                        @if ($c->created_at)
-    {{ \Carbon\Carbon::parse($c->created_at)->format('d/m/Y') }}
-@endif
+    {{-- Layout chia 2 bên --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {{-- Bảng thống kê theo năm --}}
+        <div>
+            <h2 class="text-xl font-semibold mb-4">📑 Bảng thống kê theo năm</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-300">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="py-2 px-4 border">Năm</th>
+                            <th class="py-2 px-4 border">Tổng doanh thu</th>
+                            <th class="py-2 px-4 border">Tổng vốn</th>
+                            <th class="py-2 px-4 border">Tổng lợi nhuận</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center">
+                            <td class="py-2 px-4 border">{{ $year }}</td>
+                            <td class="py-2 px-4 border">{{ number_format($totalRevenueYear, 0, ',', '.') }} ₫</td>
+                            <td class="py-2 px-4 border">{{ number_format($totalCostYear, 0, ',', '.') }} ₫</td>
+                            <td class="py-2 px-4 border">{{ number_format($profitYear, 0, ',', '.') }} ₫</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="text-center">Không tìm thấy khách hàng nào.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+        {{-- Biểu đồ theo tháng --}}
+        <div>
+            <h2 class="text-xl font-semibold mb-1">📊 Biểu đồ theo tháng</h2>
+            <canvas id="revenueChart"></canvas>
+        </div>
     </div>
-
-
-    
-                        <!-- Phân trang Bootstrap -->
-                        <div class="d-flex justify-content-center mt-4">
-                            {{ $cus->links('pagination::bootstrap-5') }}
-                        </div>
-                    </div>
 </div>
 
+{{-- Chart.js --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('revenueChart').getContext('2d');
+const revenueChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {!! json_encode($months) !!},
+        datasets: [
+            {
+                label: 'Doanh thu',
+                data: {!! json_encode($revenues) !!},
+                borderColor: 'blue',
+                fill: false
+            },
+            {
+                label: 'Vốn',
+                data: {!! json_encode($costs) !!},
+                borderColor: 'orange',
+                fill: false
+            },
+            {
+                label: 'Lợi nhuận',
+                data: {!! json_encode($profits) !!},
+                borderColor: 'green',
+                fill: false
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
 
 
-
-
-
-
-                  
-                    <!--end::Row-->
-                </div>
-                <!--end::Container-->
-
-
-                    
             </div>
             <!--end::Row-->
     </div>

@@ -4,11 +4,11 @@
                 <!--begin::Brand Link-->
                 <a href="./index.html" class="brand-link">
                     <!--begin::Brand Image-->
-                    <img src="../../dist/assets/img/AdminLTELogo.png" alt="AdminLTE Logo"
+                    <img src="https://pos.nvncdn.com/e41e16-5527/store/20240820_jRhCzjIO.jpg" alt="Rhodi Logo"
                         class="brand-image opacity-75 shadow" />
                     <!--end::Brand Image-->
                     <!--begin::Brand Text-->
-                    <span class="brand-text fw-light">AdminLTE 4</span>
+                    <span class="brand-text fw-light">Rhodi</span>
                     <!--end::Brand Text-->
                 </a>
                 <!--end::Brand Link-->
@@ -30,14 +30,14 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="./index.html" class="nav-link">
+                                    <a href="{{ route('admin.revenue.index') }}" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Dashboard v1</p>
                                     </a>
                                 </li>
                                 
                                 <li class="nav-item">
-                                    <a href="{{ route('admin.pos.index') }}" class="nav-link">
+                                    <a href="{{ route('admin.customers.index') }}" class="nav-link">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Dashboard v2</p>
                                     </a>
@@ -60,7 +60,7 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-box-seam-fill"></i>
                                 <p>
-                                    Products
+                                Management
                                     <i class="nav-arrow bi bi-chevron-right"></i>
                                 </p>
                             </a>

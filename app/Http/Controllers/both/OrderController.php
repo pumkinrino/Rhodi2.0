@@ -107,7 +107,7 @@ class OrderController extends Controller
         // Lấy các tham số tìm kiếm từ request
         $orderId  = $request->input('order_id');
         $fullName = $request->input('full_name');
-        $perPage  = $request->input('per_page', 10); // Mặc định 10 nếu không chọn
+        $perPage  = $request->input('per_page', 1000000000); 
     
         // Hàm chung để thêm điều kiện tìm kiếm và select
         $applyCommon = function ($query) use ($orderId, $fullName) {
@@ -175,25 +175,35 @@ class OrderController extends Controller
     }
     
 
-//update trạng thái đơn hàng
-    public function updateStatus(Request $request, $orderId)
-    {
-        // Chỉ cho phép các trạng thái cần thiết
-        $allowed = ['pending', 'confirmed', 'deliver', 'delivered', 'completed', 'cancelled'];
+// update trạng thái đơn hàng + trạng thái thanh toán
+public function updateStatus(Request $request, $orderId)
+{
+    $allowedStatus = ['pending', 'confirmed', 'deliver', 'delivered', 'completed', 'cancelled'];
+    $allowedPaymentStatus = ['unpaid', 'paid', 'refunded'];
 
-        $data = $request->validate([
-            'status' => ['required', Rule::in($allowed)],
-        ]);
+    $data = $request->validate([
+        'status' => ['nullable', Rule::in($allowedStatus)],
+        'payment_status' => ['nullable', Rule::in($allowedPaymentStatus)],
+    ]);
 
+    $updateFields = [];
+
+    if (isset($data['status'])) {
+        $updateFields['status'] = $data['status'];
+    }
+
+    if (isset($data['payment_status'])) {
+        $updateFields['payment_status'] = $data['payment_status'];
+    }
+
+    if (!empty($updateFields)) {
         DB::table('orders')
             ->where('order_id', $orderId)
-            ->update(['status' => $data['status']]);
-
-        return redirect()->back()->with('success', "Đã chuyển trạng thái sang “{$data['status']}”.");
+            ->update($updateFields);
     }
-    //update trạng thái thanh tóan đơn hàng 
 
-
+    return redirect()->back()->with('success', 'Cập nhật trạng thái đơn hàng thành công.');
+}
 
 
     

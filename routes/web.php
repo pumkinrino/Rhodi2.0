@@ -22,7 +22,8 @@ use App\Http\Controllers\both\PaymentMethodController;
 use App\Http\Controllers\both\OrderDetailController;
 use App\Http\Controllers\users\CheckOutController;
 use App\Http\Controllers\both\PosController;
-
+use App\Http\Controllers\admins\AdCusController;
+use App\Http\Controllers\admins\RevenueController;
 
 
 Route::get('/', [ProductController::class, 'index'])->name('welcome');
@@ -230,5 +231,10 @@ Route::get('pos/remove-product/{productCode}', [PosController::class, 'removePro
 
 // Thanh toán
 Route::post('pos/checkout', [PosController::class, 'checkout'])->name('pos.checkout');
+
+
+Route::get('revenue', [RevenueController::class, 'index'])->name('revenue.index');
+
+Route::get('/customers', [AdCusController::class, 'index'])->name('customers.index');
 }
 );
