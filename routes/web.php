@@ -27,6 +27,7 @@ use App\Http\Controllers\admins\RevenueController;
 
 
 Route::get('/', [ProductController::class, 'index'])->name('welcome');
+Route::view('/about-us', 'users.aboutus')->name('aboutus');
 
 
 Route::get('/product-details/{id}', [ProductController::class, 'showDetail'])->name('product.details');
@@ -50,6 +51,7 @@ Route::prefix('customer')->group(function () {
 
 
 // Route sp và giỏ hàng
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::post('/cart/add', [CartController::class, 'addtocart'])->name('cart.add');
 Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
 Route::get('/cart/list', [CartController::class, 'getList'])->name('cart.list');
@@ -58,6 +60,8 @@ Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remov
 //Route trang thanh toans
 Route::get('/checkout', [CheckOutController::class, 'index'])->name('checkout');
 Route::post('/checkout/process', [CheckOutController::class, 'processCheckout'])->name('checkout.process');
+Route::post('/check-voucher', [CheckOutController::class,'applydiscount'])->name('voucher.check');
+
 
 //Route xem sp theo phân loại
 Route::get('product-category/{id}', [CategoryController::class, 'show'])

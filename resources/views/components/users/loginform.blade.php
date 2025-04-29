@@ -19,10 +19,10 @@
                             placeholder="Your password" required>
                     </div>
                     <div class="checkbox-link d-flex justify-content-between">
-                        <div class="left-col">
-                            <input type="checkbox" id="remember_me" name="remember"><label for="remember_me">Remember Me</label>
+                        <!-- Link Forget Password -->
+                        <div class="right-col">
+                            <p class="text-center text-danger">If you forgot your password please contact to our customer support service through hotline to get further instruction!</p>
                         </div>
-                        <div class="right-col"><a href="#">Forget Password?</a></div>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary">Sign in</button>
