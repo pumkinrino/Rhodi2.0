@@ -24,6 +24,14 @@ class ViewServiceProvider extends ServiceProvider
             $view->with('count', $count)
                 ->with('cartlist', $cartlist);
         });
+        View::composer('users.cart', function ($view) {
+            $customer = session('customer');
+            $count = $customer ? Cart::where('customer_id', $customer->customer_id)->count() : "0";
+            $cartController = app(CartController::class);
+            $cartlist = $cartController->getCart();
+            $view->with('count', $count)
+                ->with('cartlist', $cartlist);
+        });
     }
 
     public function register()

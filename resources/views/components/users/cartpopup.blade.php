@@ -58,14 +58,14 @@
                 <table class="table price mb-30">
                     <tbody>
                         <tr>
-                            <td class="text-left"><strong>Total</strong></td>
+                            <td class="text-left"><strong>Subtotal</strong></td>
                             <td class="text-right"><strong>{{number_format($total, 0, ',', '.')}}$</strong></td>
                         </tr>
                     </tbody>
                 </table>
             </li>
             <li class="buttons w-100 float-left">
-                <form action="https://demo.templatetrip.com/Html/HTML001_victoria/cart_page.html">
+                <form action="{{ route('cart') }}">
                     <input class="btn pull-left mt_10 btn-primary btn-rounded w-100" value="View cart" type="submit">
                 </form>
                 <form action="{{route('checkout')}}">
@@ -75,29 +75,3 @@
         </ul>
     </div>
 </div>
-
-<!-- <script>
-    document.querySelectorAll('.close-cart').forEach(button => {
-        button.addEventListener('click', function () {
-            event.stopPropagation();
-            let cartId = this.getAttribute('data-id');
-
-            fetch("{{ route('cart.remove') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({ cart_id: cartId })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        this.closest('tr').remove();
-                    } else {
-                        alert(data.message);
-                    }
-                });
-        });
-    });
-</script> -->

@@ -31,7 +31,7 @@
                             <div class="slider-title mb-20 text-capitalize float-left w-100">our specials</div>
                             <div class="slider-subtitle mb-50 text-capitalize float-left w-100 text-shadow">fashion
                                 trend</div>
-                            <div class="slider-button text-uppercase float-left w-100"><a href=" #">Shop Now</a></div>
+                            <div class="slider-button text-uppercase float-left w-100"><a href=" {{route('welcome')}}">Shop Now</a></div>
                         </div>
                     </div>
                     <div>
@@ -41,8 +41,7 @@
                         </a>
                         <div class="slider-content-wrap center effect_bottom">
                             <div class="slider-title mb-20 text-capitalize float-left w-100">about us</div>
-                            <div class="slider-subtitle mb-50 text-capitalize float-left w-100">fashion style</div>
-                            <div class="slider-button text-uppercase float-left w-100"><a href=" #">Shop Now</a></div>
+                            <div class="slider-button text-uppercase float-left w-100"><a href="{{route('welcome')}}">Shop Now</a></div>
                         </div>
                     </div>
                 </div>

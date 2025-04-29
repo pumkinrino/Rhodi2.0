@@ -118,50 +118,8 @@
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-uppercase"
-                                        href="https://demo.templatetrip.com/Html/HTML001_victoria/category.html">
-                                        Shop
-                                        <span class="sr-only">(current)</span> </a>
-                                    <div class="dropdown-menu mega-menu v-2 z-depth-1 special-color py-3 px-3">
-                                        <div class="sub-menu mb-xl-0 mb-4">
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a class="menu-item pl-0"
-                                                        href="https://demo.templatetrip.com/Html/HTML001_victoria/product-grid.html">
-                                                        product grid </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-uppercase"
-                                        href="https://demo.templatetrip.com/Html/HTML001_victoria/category.html">Pages</a>
-                                    <div class="dropdown-menu mega-menu v-2 z-depth-1 special-color py-3 px-3">
-                                        <div class="sub-menu">
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a class="menu-item pl-0"
-                                                        href="https://demo.templatetrip.com/Html/HTML001_victoria/about-us.html">
-                                                        About us </a>
-                                                </li>
-                                                <li>
-                                                    <a class="menu-item pl-0"
-                                                        href="https://demo.templatetrip.com/Html/HTML001_victoria/accordions.html">
-                                                        Accordions </a>
-                                                </li>
-                                                <li>
-                                                    <a class="menu-item pl-0"
-                                                        href="https://demo.templatetrip.com/Html/HTML001_victoria/buttons.html">
-                                                        Buttons </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="nav-item dropdown">
                                     <a class="nav-link text-uppercase"
-                                        href="https://demo.templatetrip.com/Html/HTML001_victoria/contact-us.html">contact
+                                        href="{{ route('aboutus') }}">contact
                                         us</a>
                                 </li>
                             </ul>

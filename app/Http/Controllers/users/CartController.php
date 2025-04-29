@@ -7,6 +7,9 @@ use App\Models\users\Cart;
 use App\Models\users\ProductDetail;
 class CartController extends Controller
 {
+    public function index(){
+        return view('users.cart');
+    }
     public function getCart()
     {
         $customer = session('customer');
